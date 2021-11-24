@@ -1,10 +1,14 @@
+import { Route, Routes } from 'react-router-dom';
 
+import {Main} from 'domains'
 
 const App = () => {
 
   return (
     <div className="App">
-      app
+      <Routes>
+        <Route path="/" element={<Main />} />
+      </Routes>
     </div>
   );
 }
