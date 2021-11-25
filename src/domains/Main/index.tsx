@@ -1,21 +1,28 @@
 import { MainContent, MainDrawer, MainNavBar } from 'domains'
 
-import Toolbar from '@mui/material/Toolbar'
-import styled from 'styled-components'
+import styledC from 'styled-components'
 
-const MainIn = styled.div`
+const MainIn = styledC.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: row; 
+  background-color: ${({theme}) => (theme.dark.background)};
+  color: ${({theme}) => (theme.dark.font)};
+  min-height: 100vh;
 `
+
+const DivMA = styledC.div`
+  margin: 0 auto;
+`
+
 
 const Main = () => {
   return (
     <MainIn>
       <MainDrawer />
-      <div>
+      <DivMA>
         <MainNavBar />
         <MainContent />
-      </div>
+      </DivMA>
     </MainIn>
   )
 }

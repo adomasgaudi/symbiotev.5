@@ -1,5 +1,7 @@
+import Checkbox from "@mui/material/Checkbox";
 import { createGlobalStyle } from "styled-components";
 import { createTheme } from "@material-ui/core";
+import styled from "@mui/system/styled";
 
 const fontfamilyArray = [
   "'Azeret Mono', monospace",
@@ -30,7 +32,7 @@ const GlobalStylesOther = `
   
   // general styles
   *{
-    outline: 1px dashed red!important;
+    // outline: 1px dashed red!important;
   }
 
   body{
@@ -50,44 +52,35 @@ const GlobalStyles = createGlobalStyle`
 `
 
 const StyledTheme = {
-  light: "white",
-  dark: "black",
+  light: {
+    background: "white",
+    font: "#111"
+  },
+  dark: {
+    background: "black",
+    font: "#eee"
+  }
 }
+
 
 // declare module '@mui/material/styles' {
 //   interface Theme {
 //     status: {
-//       danger: string;
+//       danger: any;
 //     };
 //   }
 //   // allow configuration using `createTheme`
 //   interface ThemeOptions {
 //     status?: {
-//       danger?: string;
+//       danger?: any;
 //     };
 //   }
 // }
 
-// const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
-//   color: theme.status.danger,
-//   '&.Mui-checked': {
-//     color: theme.status.danger,
-//   },
-// }));
-
-const MuiTheme = createTheme({
-  // status: {
-  //   danger: '#eee',
-  // }
-});
-
-// const MuiTheme = createTheme<{palete: {primary: {main: string}}}>({
-//   palete:{
-//     primary: {
-//       main: '#2a71d8'
-//     }
-//   }
-// })
 
 
-export {GlobalStyles, StyledTheme, MuiTheme}
+const theme = createTheme({});
+
+
+
+export {GlobalStyles, StyledTheme, theme}

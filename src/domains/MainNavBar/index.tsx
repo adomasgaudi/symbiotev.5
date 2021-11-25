@@ -1,12 +1,34 @@
+import { Button, Typography } from '@mui/material';
 import {toggleSidebar, useAppDispatch, useAppSelector} from 'store'
 
 import AppBar from '@mui/material/AppBar'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import Switch from '@mui/material/Switch';
 import Toolbar from '@mui/material/Toolbar';
-import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import styledC from 'styled-components';
 import { useTheme } from '@mui/material/styles'
+
+const DivRow = styledC.div` 
+  display: flex;
+  flex-flow: row nowrap;
+`
+
+
+const AppBarX = styled(AppBar)(({ theme }) => ({
+  backgroundColor: theme.status.danger,
+  '&.Mui-checked': {
+    color: theme.status.danger,
+  },
+}));
+
+const AppBarY = styledC(AppBar)` 
+  color: ${({theme}) => theme.dark.font}
+`
+
 
 const MainNavBar = () => {
 
@@ -14,31 +36,39 @@ const MainNavBar = () => {
   const sidebarON = useAppSelector(state => state.ui.sidebarON )
   const theme = useTheme();  console.log( {...theme.mixins.toolbar});
   const drawerWidth = useAppSelector(state => state.ui.drawerWidth)
-  const signedIN = true;
+  const displayName = useAppSelector(state => state.fire.displayName);
   
   
   
   return (
     <>
-      <AppBar 
+      <AppBarY 
         position='fixed' 
-        sx={{ ...(sidebarON && {  width: `calc(100% - ${drawerWidth}px)` })  }}
+        sx={{ 
+          ...(sidebarON && {  width: `calc(100% - ${drawerWidth}px)` }),
+          display: 'flex',
+          alignContent: 'center',
+          background: 'transparent'
+
+        }}
       >
         <Toolbar
           sx={{display: 'flex', justifyContent: 'space-between'}}
         >
-          <div>
+          <DivRow>
             {sidebarON ? null : (
               <IconButton onClick={  ()=>{dis(toggleSidebar())}  }>
-                <ChevronRightIcon />  
+                <ChevronRightIcon color="primary"/>  
               </IconButton>
             )}
-          </div>
-          <div>
-            {signedIN ? (<Typography>userName</Typography>) : null }
-          </div>
+          </DivRow>
+          <DivRow>
+            <Button>!!!</Button>
+            {/* <div className='theme-btn'></div> */}
+            {displayName !== '' ? (<Typography>{displayName}</Typography>) : null }
+          </DivRow>
         </Toolbar>
-      </AppBar>
+      </AppBarY>
       <Toolbar />
     </>
   )

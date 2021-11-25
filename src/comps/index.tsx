@@ -1,5 +1,6 @@
 import COMP from './COMP'
+import DataComp from './DataComp'
 
-export {COMP }
+export {COMP , DataComp}
 
 

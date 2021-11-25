@@ -1,4 +1,4 @@
-import { toggleSidebar, useAppDispatch, useAppSelector } from "store"
+import { addPageDoc, toggleSidebar, useAppDispatch, useAppSelector } from "store"
 
 import Box from "@mui/system/Box"
 import { Button } from "@mui/material"
@@ -19,19 +19,41 @@ const DrawerHeader = styled( Box )(   ({ theme }) => {
   }
 )
 
+const MyLi = styled.li` 
+  cursor: pointer;
+  &:hover{
+    background: yellow;
+  }
+`
+
 
 
 
 const DrawerContent = () => {
-  return (
-    <ul>
-     {['item one','item two'].map((x, index)=>{
-       return (
-         <li key={index}>{x}</li>
-       )
-       })}
-    </ul>
-  )
+  const dis = useAppDispatch()
+  const userDocs = useAppSelector(state=>state.fire.userDocs)
+
+  const clickHandler = (docId: string) => {
+    let obj = userDocs.filter((doc: any)=> doc.docId === docId )
+    console.log(obj);
+    
+    dis(addPageDoc(obj[0]))
+  }
+  
+  
+  if(userDocs){
+    return (
+      <ul>
+        {userDocs.map((doc: any)=>(
+          <MyLi key={doc.docId} onClick={()=>clickHandler(doc.docId)} >{doc.title}</MyLi>
+        ))}
+      </ul>
+    )}
+  else {
+    return (
+      <h3>Couldn't get user docs</h3>
+    )}
+
 }
 
 

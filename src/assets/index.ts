@@ -1,3 +1,3 @@
-import {GlobalStyles, MuiTheme, StyledTheme} from './styles/styles'
+import {GlobalStyles, StyledTheme, theme} from './styles/styles'
 
-export {GlobalStyles, StyledTheme, MuiTheme}
+export {GlobalStyles, StyledTheme, theme}
