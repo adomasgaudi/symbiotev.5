@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 
 /////////-------------------------------//////////////
 
-const Symb: React.FC = ({ children }) => {
+const Symb: React.FC<{sym: any}> = ({ children, sym }) => {
   const dis = useAppDispatch()
   const divRef = useRef<HTMLDivElement>(null)
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
@@ -11,21 +11,43 @@ const Symb: React.FC = ({ children }) => {
   console.log({ pageDoc })
 
   useEffect(() => {
-    divRef.current?.addEventListener('focus', () => {
-      console.log(sym)
 
-      console.log(divRef.current?.textContent)
-      if (divRef.current?.textContent) {
-        dis(
-          updateSym({
-            docId: pageDoc.docId,
-            symId: sym.symId,
-            body: divRef.current.textContent,
-          })
-        )
-        updateSymFire(userUID, pageDoc.docId, sym, divRef.current.textContent)
+    const onFocus = (
+      target: HTMLElement | null,
+      callbackFocus: (e: any) => void,
+      callbackBlur: (e: any) => void
+    ) => {
+      if (target) {
+        target.addEventListener('focus', (e) => {
+          callbackFocus(e)
+        })
+        target.addEventListener('blur', (e) => {
+          callbackBlur(e)
+        })
       }
-    })
+    }
+
+    onFocus(divRef.current, 
+      () => {console.log(sym);
+      }, 
+      () => { }
+    )
+
+    // divRef.current?.addEventListener('focus', () => {
+    //   console.log(sym)
+
+    //   console.log(divRef.current?.textContent)
+    //   if (divRef.current?.textContent) {
+    //     dis(
+    //       updateSym({
+    //         docId: pageDoc.docId,
+    //         symId: sym.symId,
+    //         body: divRef.current.textContent,
+    //       })
+    //     )
+    //     updateSymFire(userUID, pageDoc.docId, sym, divRef.current.textContent)
+    //   }
+    // })
   }, [])
 
   return (
