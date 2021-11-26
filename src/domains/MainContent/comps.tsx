@@ -11,7 +11,8 @@ const Symb: React.FC<{sym: any}> = ({ children, sym }) => {
   console.log({ pageDoc })
 
   useEffect(() => {
-
+    console.log(shit is real);
+    
     const onFocus = (
       target: HTMLElement | null,
       callbackFocus: (e: any) => void,
