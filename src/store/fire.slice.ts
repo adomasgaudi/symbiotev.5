@@ -3,9 +3,9 @@ import { Data, P } from 'scripts'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: {
-  userUID: string, displayName: string, userDocs: any | null, pageDoc: Data.docType | null
+  userUID: string | null, displayName: string | null, userDocs: any | null, pageDoc: Data.docType | null
 } = {
-  userUID: 'GYjqBDUVenQ3FojPF0lY4GT2L1K2',
+  userUID: '',
   displayName: 'adomas',
   userDocs: [],
   pageDoc: null
@@ -15,10 +15,10 @@ const fireSlice = createSlice({
   name: "fire",
   initialState,
   reducers: {
-    updateUserUID: (state, action: P.A<string>) =>{
+    updateUserUID: (state, action: P.A<string | null>) =>{
       state.userUID = action.payload
     },
-    updateDisplayName: (state, action: P.A<string>) =>{
+    updateDisplayName: (state, action: P.A<string | null>) =>{
       state.displayName = action.payload
     },
     addUserDocs: (state, action: P.A<any>) => {

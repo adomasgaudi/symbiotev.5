@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react'
 import { addUserDocs, updateDisplayName, updateUserUID, useAppDispatch, useAppSelector } from 'store'
+import {auth, getFire} from 'scripts'
 
-import {getFire} from 'scripts'
+import { onAuthStateChanged } from 'firebase/auth'
 
 const DataComp = () => {
   const dis = useAppDispatch()
   const userUID = useAppSelector(state => state.fire.userUID)
+
+  
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      dis(updateDisplayName(user.displayName))
+      dis(updateUserUID(user.uid))
+    }
+  })
+
+
 
   useEffect(() => {
     (async()=>{

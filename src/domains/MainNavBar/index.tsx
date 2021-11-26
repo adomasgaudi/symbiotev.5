@@ -18,12 +18,6 @@ const DivRow = styledC.div`
 `
 
 
-const AppBarX = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.status.danger,
-  '&.Mui-checked': {
-    color: theme.status.danger,
-  },
-}));
 
 const AppBarY = styledC(AppBar)` 
   color: ${({theme}) => theme.dark.font}
