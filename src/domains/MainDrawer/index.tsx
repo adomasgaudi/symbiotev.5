@@ -1,15 +1,15 @@
-import { addPageDoc, toggleSidebar, useAppDispatch, useAppSelector } from "store"
+import { addPageDoc, addUserDocs, toggleSidebar, useAppDispatch, useAppSelector } from "store"
+import {createNewDoc, getFire} from 'scripts'
 
 import Box from "@mui/system/Box"
 import { Button } from "@mui/material"
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Drawer from "@mui/material/Drawer"
-import IconButton from "@mui/material/IconButton"
 import styled from "styled-components"
 import { useTheme } from '@mui/material/styles'
 
 const DrawerHeader = styled( Box )(   ({ theme }) => {
-    console.log(theme);
+    // console.log(theme);
     return (
     {
       display: 'flex',
@@ -32,21 +32,38 @@ const MyLi = styled.li`
 const DrawerContent = () => {
   const dis = useAppDispatch()
   const userDocs = useAppSelector(state=>state.fire.userDocs)
+  const userUID = useAppSelector(state=>state.fire.userUID)
 
   const clickHandler = (docId: string) => {
     let obj = userDocs.filter((doc: any)=> doc.docId === docId )
-    console.log(obj);
+    //console.log(obj, 'userDoc of id');
     
     dis(addPageDoc(obj[0]))
   }
   
-  
+  const createNewHandler = async() => {
+    // add emty to firebase
+    createNewDoc(userUID)
+    if(userUID){
+      ;(async()=>{
+        //console.log('ran', userUID);
+        // dispatch(updateDisplayName('Adomas Gaudi'))
+        const obj = await getFire(userUID)
+        dis(addUserDocs(obj))
+      })()
+    }
+    // add empty to userDocs
+    // dis(createDoc(title))
+    
+  }
+
   if(userDocs){
     return (
       <ul>
         {userDocs.map((doc: any)=>(
           <MyLi key={doc.docId} onClick={()=>clickHandler(doc.docId)} >{doc.title}</MyLi>
         ))}
+        <MyLi onClick={createNewHandler}>new doc</MyLi>
       </ul>
     )}
   else {
@@ -62,7 +79,7 @@ const DrawerContent = () => {
 
 
 const MainDrawer = () => {
-  const theme = useTheme(); console.log( {...theme.mixins.toolbar});
+  const theme = useTheme(); //console.log( {...theme.mixins.toolbar});
   const sidebarON = useAppSelector(state => state.ui.sidebarON )
   const dis = useAppDispatch()
   const drawerWidth = useAppSelector(state => state.ui.drawerWidth)

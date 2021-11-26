@@ -3,14 +3,11 @@ import {toggleSidebar, useAppDispatch, useAppSelector} from 'store'
 
 import AppBar from '@mui/material/AppBar'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import Switch from '@mui/material/Switch';
 import Toolbar from '@mui/material/Toolbar';
-import { styled } from '@mui/material/styles'
+import { auth } from 'scripts';
+import { signOut } from '@firebase/auth';
 import styledC from 'styled-components';
-import { useTheme } from '@mui/material/styles'
 
 const DivRow = styledC.div` 
   display: flex;
@@ -28,11 +25,14 @@ const MainNavBar = () => {
 
   const dis = useAppDispatch()
   const sidebarON = useAppSelector(state => state.ui.sidebarON )
-  const theme = useTheme();  console.log( {...theme.mixins.toolbar});
+  // const theme = useTheme(); 
   const drawerWidth = useAppSelector(state => state.ui.drawerWidth)
   const displayName = useAppSelector(state => state.fire.displayName);
   
-  
+  const logOutHandler = async() => {
+    await signOut(auth)
+    window.location.reload();
+  }
   
   return (
     <>
@@ -60,6 +60,7 @@ const MainNavBar = () => {
             <Button>!!!</Button>
             {/* <div className='theme-btn'></div> */}
             {displayName !== '' ? (<Typography>{displayName}</Typography>) : null }
+            {displayName !== '' ? (<Button onClick={logOutHandler}>LOG-OUT</Button>) : null }
           </DivRow>
         </Toolbar>
       </AppBarY>

@@ -4,7 +4,8 @@ namespace Data {
   export type symType = {
     body: string,
     order: number,
-    symId: string
+    symId: string,
+    docId: string
   }
   export type docType = {
     title: string,

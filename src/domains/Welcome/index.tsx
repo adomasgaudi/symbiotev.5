@@ -1,8 +1,10 @@
 import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth'
+import { updateUserUID, useAppDispatch } from 'store'
 
 import { Button } from '@mui/material'
 import React from 'react'
 import { auth } from 'scripts'
+import {googleLogin} from 'scripts'
 import styled from 'styled-components'
 
 const CenterDiv = styled.div`
@@ -15,23 +17,15 @@ const CenterDiv = styled.div`
 
 const Welcome = () => {
 
-
-  const googleLogin = async() => {
-
-    // // Sign in using a popup.
-    const provider = new GoogleAuthProvider();
-    provider.addScope('profile');
-    provider.addScope('email');
-    const result = await signInWithPopup(auth, provider);
-    console.log(result);
-    
-
+  const dis = useAppDispatch()
+  const googleLoginHandler = async() => {
+    const res = await googleLogin()
+    dis(updateUserUID(res.user.uid))
   }
-
-
+  
   return (
     <CenterDiv>
-      <Button onClick={googleLogin} >Log-In with Google</Button>
+      <Button onClick={googleLoginHandler} >Log-In with Google</Button>
     </CenterDiv>
   )
 }

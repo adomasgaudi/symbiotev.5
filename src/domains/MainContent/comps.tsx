@@ -1,60 +1,49 @@
-import { useAppDispatch, useAppSelector } from 'store'
+import { updateSym, updateTitle, useAppDispatch, useAppSelector } from 'store'
+import {updateSymFire, updateTitleFire} from 'scripts'
 import { useEffect, useRef } from 'react'
+
+import {onFocus} from 'scripts'
+import styled from 'styled-components'
 
 /////////-------------------------------//////////////
 
-const Symb: React.FC<{sym: any}> = ({ children, sym }) => {
+const EditDiv = styled.div`
+  &:focus{
+    outline: 0px solid transparent;
+  }
+
+`
+
+const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
   const dis = useAppDispatch()
   const divRef = useRef<HTMLDivElement>(null)
-  const pageDoc = useAppSelector(state => state.fire.pageDoc)
   const userUID = useAppSelector(state => state.fire.userUID)
-  console.log({ pageDoc })
+  const pageDoc = useAppSelector(state => state.fire.pageDoc)
+  // console.log({ pageDoc })
 
   useEffect(() => {
-    console.log(shit is real);
-    
-    const onFocus = (
-      target: HTMLElement | null,
-      callbackFocus: (e: any) => void,
-      callbackBlur: (e: any) => void
-    ) => {
-      if (target) {
-        target.addEventListener('focus', (e) => {
-          callbackFocus(e)
-        })
-        target.addEventListener('blur', (e) => {
-          callbackBlur(e)
-        })
-      }
-    }
 
-    onFocus(divRef.current, 
-      () => {console.log(sym);
-      }, 
-      () => { }
+    onFocus(
+      divRef.current, 
+      () => {}, 
+      (target) => {
+        if(target.textContent){
+          dis(updateSym({
+              symId: sym.symId,
+              body: target.textContent,
+              docId: sym.docId
+          }))
+          updateSymFire(userUID, pageDoc.docId, sym, target.textContent)
+        }
+      }
     )
 
-    // divRef.current?.addEventListener('focus', () => {
-    //   console.log(sym)
-
-    //   console.log(divRef.current?.textContent)
-    //   if (divRef.current?.textContent) {
-    //     dis(
-    //       updateSym({
-    //         docId: pageDoc.docId,
-    //         symId: sym.symId,
-    //         body: divRef.current.textContent,
-    //       })
-    //     )
-    //     updateSymFire(userUID, pageDoc.docId, sym, divRef.current.textContent)
-    //   }
-    // })
-  }, [])
+  }, [sym, dis])
 
   return (
-    <div contentEditable suppressContentEditableWarning ref={divRef}>
-      {{ valueIN }}
-    </div>
+    <EditDiv contentEditable suppressContentEditableWarning ref={divRef}>
+      {valueIN}
+    </EditDiv>
   )
 }
 
@@ -62,22 +51,61 @@ const Symb: React.FC<{sym: any}> = ({ children, sym }) => {
 
 const Symbs = () => {
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
-  if (pageDoc)
+  if (pageDoc){
+    const syms = pageDoc.syms
+    //console.log('hey hey heyyyyyyy', syms);
+    //console.log(syms[0]);
+    //console.log(' wasawasawasawasawasaaaaaaap bitconeeeeeeeect');
+    
+    //console.log(pageDoc);
+    
     return (
       <ul>
-        {pageDoc.syms.map((sym: any) => (
-          <Symb key={sym.symId}>{sym.body}</Symb>
+        {syms.map((sym: any) => (
+          <Symb key={sym.symId} sym={sym} valueIN={sym.body}></Symb>
         ))}
       </ul>
-    )
+    )}
   else return <li>none to show</li>
 }
 
 ///////////--------------------------------------////////////////
 
-const DocTitle = () => {
+const EditH1 = styled.h1`
+  &:focus{
+    outline: 0px solid transparent;
+  }
+
+`
+const DocTitle: React.FC<{valueIN: string, doc: any}> = ({ valueIN, doc }) => {
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
-  if (pageDoc) return <h1>{pageDoc.title}</h1>
+  console.log('=--------------------');
+  
+  console.log(pageDoc); 
+  
+  const dis = useAppDispatch()
+  const h1Ref = useRef<HTMLDivElement>(null)
+  const userUID = useAppSelector(state => state.fire.userUID)
+  useEffect(() => {
+
+    onFocus(
+      h1Ref.current, 
+      () => {}, 
+      (target) => {
+        if(target.textContent){
+          dis(updateTitle({
+              title: target.textContent,
+              docId: pageDoc.docId
+          }))
+          updateTitleFire(userUID, pageDoc.docId, target.textContent)
+        }
+      }
+    )
+
+  }, [dis])
+  if (valueIN) return (
+    <EditH1 contentEditable suppressContentEditableWarning ref={h1Ref}>{valueIN}</EditH1>
+  )
   else return <h1>loading...</h1>
 }
 
