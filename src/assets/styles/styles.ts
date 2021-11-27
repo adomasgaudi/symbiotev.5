@@ -74,15 +74,48 @@ const StyledTheme = {
 //     };
 //   }
 // }
-
+declare module '@material-ui/core/styles' {
+  interface ThemeOptions {    
+      bg?: any  // optional,
+      text?: any
+  }
+}
 
 
 const theme = createTheme({
   typography: {
     fontFamily: 'proggy'
- },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        fontWeight: "bold",
+        backgroundColor: "red",
+        margin: "10px",
+        "&:hover": {
+          backgroundColor: "green"
+        }
+      }
+    }
+  },
+  palette: {
+    primary: {
+      main: '#3F8AE0'
+    },
+    secondary: {
+      main: '#326eb3'
+    }
+  },
+  bg: {
+    main: '#fff',
+    light: '#F4F5F7'
+  },
+  text: {
+    main: '#172B4D',
+    light: '#262930'
+  }
 });
 
 
 
-export {GlobalStyles, StyledTheme, theme}
+export { GlobalStyles, StyledTheme, theme }

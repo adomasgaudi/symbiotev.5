@@ -10,7 +10,7 @@ import { ThemeProvider } from '@material-ui/core'
 import { render } from 'react-dom';
 import {store} from 'store'
 
-//console.log(theme);
+console.log({theme});
 
 render(
 
