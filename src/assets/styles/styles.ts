@@ -1,5 +1,30 @@
+import 'styled-components';
+
+import { Theme } from '@material-ui/core/styles';
 import { createGlobalStyle } from "styled-components";
 import { createTheme } from "@material-ui/core";
+
+interface CustomTheme {
+    bg: {
+        main: string,
+        light: string
+    }, 
+    text: {
+        main: string,
+        light: string
+    }
+}
+declare module '@material-ui/core/styles' {
+    interface Theme extends CustomTheme {}
+    interface ThemeOptions extends CustomTheme {}
+}
+
+declare module 'styled-components' {
+    export interface DefaultTheme extends Theme {}
+}
+
+
+
 
 const fontfamilyArray = [
   "'Azeret Mono', monospace",
@@ -8,7 +33,7 @@ const fontfamilyArray = [
   "'proggy', monospace"
 ]
 
-const GlobalStylesGeneral = ` 
+const GlobalStylesGeneral = createGlobalStyle` 
 
   // general init styles
   html{ 
@@ -22,11 +47,9 @@ const GlobalStylesGeneral = `
   }
   *{box-sizing: border-box}
 
-
-
 `
 
-const GlobalStylesOther = `  
+const GlobalStylesOther = createGlobalStyle`  
   
   // general styles
   *{
@@ -36,7 +59,7 @@ const GlobalStylesOther = `
   body{
     border-radius: 2px; 
     font-size: 20px;
-    font-family: ${fontfamilyArray[3]}
+    font-family: ${fontfamilyArray[3]};
   }
 
   p{opacity: 0.6; line-height: 1.5;}
@@ -44,42 +67,6 @@ const GlobalStylesOther = `
   img{max-width: 100%}
 `
 
-const GlobalStyles = createGlobalStyle` 
-  ${GlobalStylesGeneral}
-  ${GlobalStylesOther}
-`
-
-const StyledTheme = {
-  light: {
-    background: "white",
-    font: "#111"
-  },
-  dark: {
-    background: "black",
-    font: "#eee"
-  }
-}
-
-
-// declare module '@mui/material/styles' {
-//   interface Theme {
-//     status: {
-//       danger: any;
-//     };
-//   }
-//   // allow configuration using `createTheme`
-//   interface ThemeOptions {
-//     status?: {
-//       danger?: any;
-//     };
-//   }
-// }
-declare module '@material-ui/core/styles' {
-  interface ThemeOptions {    
-      bg?: any  // optional,
-      text?: any
-  }
-}
 
 
 const theme = createTheme({
@@ -118,4 +105,4 @@ const theme = createTheme({
 
 
 
-export { GlobalStyles, StyledTheme, theme }
+export { GlobalStylesGeneral, GlobalStylesOther, theme }

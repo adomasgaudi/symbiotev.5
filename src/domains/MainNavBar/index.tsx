@@ -20,8 +20,9 @@ const DivRow = styledC.div`
 
 
 const AppBarY = styledC(AppBar)` 
-  color: ${({theme}) => theme.dark.font}
-`
+  color: 'white'
+  `
+  // color: ${({theme}) => theme.dark.font}
 
 
 const Typo = styled(Typography)(({theme}) => {

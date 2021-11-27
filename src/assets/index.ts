@@ -1,3 +1,3 @@
-import {GlobalStyles, StyledTheme, theme} from './styles/styles'
+import { GlobalStylesGeneral, GlobalStylesOther, theme } from './styles/styles'
 
-export {GlobalStyles, StyledTheme, theme}
+export { theme, GlobalStylesGeneral, GlobalStylesOther}

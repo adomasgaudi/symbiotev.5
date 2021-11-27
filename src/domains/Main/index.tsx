@@ -5,10 +5,12 @@ import styledC from 'styled-components'
 const MainIn = styledC.div`
   display: flex;
   flex-direction: row; 
-  background-color: ${({theme}) => (theme.dark.background)};
-  color: ${({theme}) => (theme.dark.font)};
+  background-color: 'black';
+  color: 'white';
   min-height: 100vh;
-`
+  `
+  // background-color: ${({theme}) => (theme.dark.background)};
+  // color: ${({theme}) => (theme.dark.font)};
 
 const DivMA = styledC.div`
   margin: 0 auto;
