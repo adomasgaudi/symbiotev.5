@@ -10,10 +10,12 @@ const DataComp = () => {
   
   
   useEffect(() => {
+    
     onAuthStateChanged(auth, user => {
       if (user) {
         dispatch(updateDisplayName(user.displayName))
         dispatch(updateUserUID(user.uid))
+        //console.log({user});
         // dis()
       }
     })
@@ -21,6 +23,7 @@ const DataComp = () => {
       ;(async()=>{
         const obj = await getFire(userUID)
         dispatch(addUserDocs(obj))
+        // console.log({obj});
       })()
     }
   }, [userUID, dispatch])

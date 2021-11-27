@@ -5,15 +5,11 @@ import { useAppSelector } from 'store';
 
 const App = () => {
   const userUID = useAppSelector(state=>state.fire.userUID)
-  // console.log('here');
-  
-  // console.log(userUID);
-  
 
   return (
     <div className="App">
-      <DataComp />
-        { userUID ? <Main /> : <Welcome /> }
+      <DataComp /> 
+      { userUID ? <Main /> : <Welcome /> }
     </div>
   );
 }

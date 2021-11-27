@@ -1,5 +1,5 @@
-import { updateSym, updateTitle, useAppDispatch, useAppSelector } from 'store'
-import {updateSymFire, updateTitleFire} from 'scripts'
+import { addUserDocs, updateSym, updateTitle, useAppDispatch, useAppSelector } from 'store'
+import {createNewSym, deleteSym, getFire, updateSymFire, updateTitleFire} from 'scripts'
 import { useEffect, useRef } from 'react'
 
 import {onFocus} from 'scripts'
@@ -31,7 +31,8 @@ const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
           dis(updateSym({
               symId: sym.symId,
               body: target.textContent,
-              docId: sym.docId
+              docId: sym.docId,
+              order: 1
           }))
           updateSymFire(userUID, pageDoc.docId, sym, target.textContent)
         }
@@ -39,6 +40,26 @@ const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
     )
 
   }, [sym, dis])
+
+  
+
+  
+  useEffect(()=>{
+    //console.log('hiii');
+    if(divRef.current)
+    divRef.current.addEventListener('keydown', (e)=>{
+      if (e.key == 'Backspace' && e.ctrlKey) {
+        //console.log('DELETED');
+        
+        deleteSym(userUID, sym.docId, sym.symId )};
+      if(userUID){
+        ;(async()=>{
+          const obj = await getFire(userUID)
+          dis(addUserDocs(obj))
+        })()
+      }
+    })
+  },[])
 
   return (
     <EditDiv contentEditable suppressContentEditableWarning ref={divRef}>
@@ -49,21 +70,38 @@ const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
 
 //////////------------------------------------------/////////
 
+
+const MyLi = styled.li`
+  &:hover{
+    box-shadow: 0px 1px 0px 0px yellow;
+  }
+`
+
 const Symbs = () => {
+  const dis = useAppDispatch()
+  const userUID = useAppSelector(state => state.fire.userUID)
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
+  
+  const createNewHandler = async() => {
+    // add emty to firebase
+    createNewSym(userUID, pageDoc.docId)
+    if(userUID){
+      ;(async()=>{
+        const obj = await getFire(userUID)
+        dis(addUserDocs(obj))
+      })()
+    }
+    
+  }
   if (pageDoc){
     const syms = pageDoc.syms
-    //console.log('hey hey heyyyyyyy', syms);
-    //console.log(syms[0]);
-    //console.log(' wasawasawasawasawasaaaaaaap bitconeeeeeeeect');
-    
-    //console.log(pageDoc);
-    
+
     return (
       <ul>
         {syms.map((sym: any) => (
           <Symb key={sym.symId} sym={sym} valueIN={sym.body}></Symb>
-        ))}
+        ))} 
+        <MyLi onClick={createNewHandler}>new doc</MyLi>
       </ul>
     )}
   else return <li>none to show</li>
@@ -79,9 +117,9 @@ const EditH1 = styled.h1`
 `
 const DocTitle: React.FC<{valueIN: string, doc: any}> = ({ valueIN, doc }) => {
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
-  console.log('=--------------------');
+  //console.log('=--------------------');
   
-  console.log(pageDoc); 
+  //console.log(pageDoc); 
   
   const dis = useAppDispatch()
   const h1Ref = useRef<HTMLDivElement>(null)

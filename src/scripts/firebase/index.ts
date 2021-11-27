@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
-import { addDoc, collection, doc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
 import { getDocs, setDoc } from '@firebase/firestore'
 
 import { getFirestore } from 'firebase/firestore'
@@ -90,7 +90,6 @@ const createNewDoc = async (userUID: any) => {
     title: 'empty',
   })
 
-  console.log({ docRef })
 
   addDoc(collection(db, 'users', userUID, 'userDocs', docRef.id, 'syms'), {
     body: "so... what's up?",
@@ -98,6 +97,16 @@ const createNewDoc = async (userUID: any) => {
     docId: docRef.id,
   })
 }
+
+const createNewSym = async (userUID: any, docId: any) => {
+  const docRef = await addDoc(collection(db, 'users', userUID, 'userDocs', docId, 'syms'), {
+    body: 'wait a minute',
+    order: 1,
+    docId
+  })
+
+}
+
 
 const googleLogin = async () => {
   // // Sign in using a popup.
@@ -108,6 +117,13 @@ const googleLogin = async () => {
   return result
 }
 
+const deleteSym = async(userUID: any, docId: any, symId: any) => {
+  deleteDoc(doc(db, "users", userUID, 'userDocs', docId , 'syms', symId));
+}
+const deleteUserDoc= async(userUID: any, docId: any) => {
+  deleteDoc(doc(db, "users", userUID, 'userDocs', docId ));
+}
+
 export {
   getFire,
   updateSymFire,
@@ -116,4 +132,7 @@ export {
   auth,
   createNewDoc,
   googleLogin,
+  createNewSym,
+  deleteSym,
+  deleteUserDoc
 }

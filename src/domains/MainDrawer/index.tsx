@@ -52,8 +52,6 @@ const DrawerContent = () => {
         dis(addUserDocs(obj))
       })()
     }
-    // add empty to userDocs
-    // dis(createDoc(title))
     
   }
 

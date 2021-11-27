@@ -77,7 +77,11 @@ const StyledTheme = {
 
 
 
-const theme = createTheme({});
+const theme = createTheme({
+  typography: {
+    fontFamily: 'proggy'
+ },
+});
 
 
 

@@ -20,7 +20,7 @@ namespace Data {
 }
 
 namespace P {
-  export type A<T> = PayloadAction<T>;
+  export type a<T> = PayloadAction<T>;
 }
 
 

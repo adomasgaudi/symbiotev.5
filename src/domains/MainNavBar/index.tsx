@@ -7,7 +7,10 @@ import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar';
 import { auth } from 'scripts';
 import { signOut } from '@firebase/auth';
+import styled from '@mui/system/styled';
 import styledC from 'styled-components';
+
+// import
 
 const DivRow = styledC.div` 
   display: flex;
@@ -19,6 +22,23 @@ const DivRow = styledC.div`
 const AppBarY = styledC(AppBar)` 
   color: ${({theme}) => theme.dark.font}
 `
+
+
+const Typo = styled(Typography)(({theme}) => {
+  return ({
+    color: 'red',
+    fontFamily: 'proggy',
+    fontSize: '23px'
+  })
+})
+
+
+// const MyThemeComponent = styled('div')(({ theme }) => ({
+//   color: theme.palette.primary.contrastText,
+//   backgroundColor: theme.palette.primary.main,
+//   padding: theme.spacing(1),
+//   borderRadius: theme.shape.borderRadius,
+// }));
 
 
 const MainNavBar = () => {
@@ -57,9 +77,7 @@ const MainNavBar = () => {
             )}
           </DivRow>
           <DivRow>
-            <Button>!!!</Button>
-            {/* <div className='theme-btn'></div> */}
-            {displayName !== '' ? (<Typography>{displayName}</Typography>) : null }
+            {displayName !== '' ? (<Typo>{displayName}</Typo>) : null }
             {displayName !== '' ? (<Button onClick={logOutHandler}>LOG-OUT</Button>) : null }
           </DivRow>
         </Toolbar>
