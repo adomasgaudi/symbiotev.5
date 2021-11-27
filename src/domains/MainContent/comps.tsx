@@ -34,7 +34,7 @@ const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
               docId: sym.docId,
               order: 1
           }))
-          updateSymFire(userUID, pageDoc.docId, sym, target.textContent)
+          updateSymFire(userUID, sym, target.textContent)
         }
       }
     )

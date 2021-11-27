@@ -1,23 +1,26 @@
 import { addPageDoc, addUserDocs, toggleSidebar, useAppDispatch, useAppSelector } from "store"
-import {createNewDoc, getFire} from 'scripts'
+import { createNewDoc, getFire } from 'scripts'
 
 import Box from "@mui/system/Box"
 import { Button } from "@mui/material"
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import Drawer from "@mui/material/Drawer"
+import {DrawerX} from './modules'
+import { deleteUserDoc } from "scripts/firebase"
 import styled from "styled-components"
+import styless from './styles.module.css'
 import { useTheme } from '@mui/material/styles'
 
-const DrawerHeader = styled( Box )(   ({ theme }) => {
-    // console.log(theme);
-    return (
-    {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-    })
-  }
-)
+const Button2 = () => {
+  return (
+    <div className={styless.button}>sdf</div>
+  )
+}
+const DrawerHeader = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+}))
+
 
 const MyLi = styled.li` 
   display: flex;
@@ -52,101 +55,102 @@ const Xtag = styled.span`
 
 const DrawerContent = () => {
   const dis = useAppDispatch()
-  const userDocs = useAppSelector(state=>state.fire.userDocs)
-  const userUID = useAppSelector(state=>state.fire.userUID)
+  const userDocs = useAppSelector(state => state.fire.userDocs)
+  const userUID = useAppSelector(state => state.fire.userUID)
 
-  const clickHandler = (docId: string) => {
-    let obj = userDocs.filter((doc: any)=> doc.docId === docId )
-    //console.log(obj, 'userDoc of id');
-    
+  const docOpenHandler = (docId: string) => {
+    let obj = userDocs.filter((doc: any) => doc.docId === docId)
     dis(addPageDoc(obj[0]))
   }
-  
-  const createNewHandler = async() => {
+
+  const createNewDocHandler = async () => {
     // add emty to firebase
     createNewDoc(userUID)
-    if(userUID){
-      ;(async()=>{
+    if (userUID) {
+      ; (async () => {
         //console.log('ran', userUID);
         // dispatch(updateDisplayName('Adomas Gaudi'))
         const obj = await getFire(userUID)
         dis(addUserDocs(obj))
       })()
     }
-    
+
   }
 
-  if(userDocs){
+  const deleteDocHandler = async (docId: string) => {
+    console.log('delete ran')
+    deleteUserDoc(userUID, docId)
+  }
+  if (userDocs) {
     return (
       <ul>
-        {userDocs.map((doc: any)=>(
-          <MyLi key={doc.docId} onClick={()=>clickHandler(doc.docId)} >
+        {userDocs.map((doc: any) => (
+          <MyLi key={doc.docId} onClick={() => docOpenHandler(doc.docId)} >
             <TextSpan>{doc.title}</TextSpan>
-            <Xtag>X</Xtag>
+            <Xtag onClick={() => deleteDocHandler(doc.docId)} >X</Xtag>
           </MyLi>
         ))}
-        <MyLi onClick={createNewHandler}>new doc</MyLi>
+        <MyLi onClick={createNewDocHandler}>new doc</MyLi>
       </ul>
-    )}
+    )
+  }
   else {
     return (
       <h3>Couldn't get user docs</h3>
-    )}
+    )
+  }
 
 }
 
+
+// const MuiButton = styled(Button)(()=>(
+//   // color: "red";
+// ))
 
 
 
 
 
 const MainDrawer = () => {
-  const theme = useTheme(); //console.log( {...theme.mixins.toolbar});
-  const sidebarON = useAppSelector(state => state.ui.sidebarON )
+  const theme = useTheme()
   const dis = useAppDispatch()
-  const drawerWidth = useAppSelector(state => state.ui.drawerWidth)
 
 
   return (
-    <Drawer
-      variant='persistent'
-      anchor='left'
-      open={sidebarON}  
-      sx={{ 
-        boxSizing: 'border-box',
-        width: `${sidebarON ? drawerWidth : 0}px`, 
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-          padding: `${sidebarON ? theme.spacing(0, 1) : 0}`,
-          // position: 'static'
-        }
-      }}
-    >
-      <DrawerHeader 
-        sx={{ 
-          // ...(theme.mixins.toolbar),
+    <DrawerX>
+      <DrawerHeader
+        sx={{
           height: '56px',
-          ['@media (min-width:600px)']: { // eslint-disable-line no-useless-computed-key
+          ['@media (min-width:600px)']: {
             height: '64px'
           },
-          ['@media (min-width:0px)']: { // eslint-disable-line no-useless-computed-key
+          ['@media (min-width:0px)']: {
             height: '48px'
           },
           padding: theme.spacing(0, -1)
         }}
       >
-        <Button 
-          onClick={()=>{dis(toggleSidebar())}} 
+        <Button
+          onClick={() => { dis(toggleSidebar()) }}
           variant="text"
         >
           <ChevronLeftIcon />CLOSE
-
+          <Button2 />
         </Button>
       </DrawerHeader>
+
       <DrawerContent />
-    </Drawer>
+    </DrawerX>
   )
 }
 
 export default MainDrawer
+
+
+
+
+
+
+
+
+

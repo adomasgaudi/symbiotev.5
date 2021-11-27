@@ -96,7 +96,7 @@ const createNewDoc = async (userUID: string) => {
     title: 'untitled',
   })
 
-  // add one sym 
+  // add the first sym 
   addDoc(collection(db, 'users', userUID, 'userDocs', docRef.id, 'syms'), {
     body: "___",
     order: 1,
