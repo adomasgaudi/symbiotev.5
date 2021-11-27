@@ -4,7 +4,8 @@ namespace Data {
   export type symType = {
     body: string,
     order: number,
-    symId: string
+    symId: string,
+    docId: string
   }
   export type docType = {
     title: string,
@@ -19,7 +20,7 @@ namespace Data {
 }
 
 namespace P {
-  export type A<T> = PayloadAction<T>;
+  export type a<T> = PayloadAction<T>;
 }
 
 

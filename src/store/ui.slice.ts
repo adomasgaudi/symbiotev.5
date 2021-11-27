@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit'
 const uiSlice = createSlice({
   name: "ui",
   initialState: {
-    sidebarON: false,
+    sidebarON: true,
     drawerWidth: 300,
   },
   reducers: {

@@ -1,20 +1,21 @@
 import {DocTitle, Symbs} from './comps'
 import {MyContainer, StyledDiv} from './styles'
 
-import { useTheme } from '@mui/system'
+import { useAppSelector } from 'store'
 
 const MainContent = () => {
-  const theme = useTheme()
-  console.log({ theme })
-
+  const pageDoc = useAppSelector(state => state.fire.pageDoc)
+  // console.log();
   return (
     <StyledDiv>
       <MyContainer>
-        <DocTitle />
+        {pageDoc && <DocTitle valueIN={pageDoc.title} doc={pageDoc} />}
+        
         <Symbs />
       </MyContainer>
     </StyledDiv>
   )
+  
 }
 
 export {}

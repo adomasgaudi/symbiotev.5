@@ -1,7 +1,5 @@
-import Checkbox from "@mui/material/Checkbox";
 import { createGlobalStyle } from "styled-components";
 import { createTheme } from "@material-ui/core";
-import styled from "@mui/system/styled";
 
 const fontfamilyArray = [
   "'Azeret Mono', monospace",
@@ -79,7 +77,11 @@ const StyledTheme = {
 
 
 
-const theme = createTheme({});
+const theme = createTheme({
+  typography: {
+    fontFamily: 'proggy'
+ },
+});
 
 
 

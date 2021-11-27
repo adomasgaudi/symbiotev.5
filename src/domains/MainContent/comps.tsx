@@ -1,60 +1,149 @@
-import { useAppDispatch, useAppSelector } from 'store'
+import { addUserDocs, updateSym, updateTitle, useAppDispatch, useAppSelector } from 'store'
+import {createNewSym, deleteSym, getFire, updateSymFire, updateTitleFire} from 'scripts'
 import { useEffect, useRef } from 'react'
+
+import {onFocus} from 'scripts'
+import styled from 'styled-components'
 
 /////////-------------------------------//////////////
 
-const Symb: React.FC = ({ children }) => {
+const EditDiv = styled.div`
+  &:focus{
+    outline: 0px solid transparent;
+  }
+
+`
+
+const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
   const dis = useAppDispatch()
   const divRef = useRef<HTMLDivElement>(null)
-  const pageDoc = useAppSelector(state => state.fire.pageDoc)
   const userUID = useAppSelector(state => state.fire.userUID)
-  console.log({ pageDoc })
+  const pageDoc = useAppSelector(state => state.fire.pageDoc)
+  // console.log({ pageDoc })
 
   useEffect(() => {
-    divRef.current?.addEventListener('focus', () => {
-      console.log(sym)
 
-      console.log(divRef.current?.textContent)
-      if (divRef.current?.textContent) {
-        dis(
-          updateSym({
-            docId: pageDoc.docId,
-            symId: sym.symId,
-            body: divRef.current.textContent,
-          })
-        )
-        updateSymFire(userUID, pageDoc.docId, sym, divRef.current.textContent)
+    onFocus(
+      divRef.current, 
+      () => {}, 
+      (target) => {
+        if(target.textContent){
+          dis(updateSym({
+              symId: sym.symId,
+              body: target.textContent,
+              docId: sym.docId,
+              order: 1
+          }))
+          updateSymFire(userUID, pageDoc.docId, sym, target.textContent)
+        }
+      }
+    )
+
+  }, [sym, dis])
+
+  
+
+  
+  useEffect(()=>{
+    //console.log('hiii');
+    if(divRef.current)
+    divRef.current.addEventListener('keydown', (e)=>{
+      if (e.key == 'Backspace' && e.ctrlKey) {
+        //console.log('DELETED');
+        
+        deleteSym(userUID, sym.docId, sym.symId )};
+      if(userUID){
+        ;(async()=>{
+          const obj = await getFire(userUID)
+          dis(addUserDocs(obj))
+        })()
       }
     })
-  }, [])
+  },[])
 
   return (
-    <div contentEditable suppressContentEditableWarning ref={divRef}>
-      {{ valueIN }}
-    </div>
+    <EditDiv contentEditable suppressContentEditableWarning ref={divRef}>
+      {valueIN}
+    </EditDiv>
   )
 }
 
 //////////------------------------------------------/////////
 
+
+const MyLi = styled.li`
+  &:hover{
+    box-shadow: 0px 1px 0px 0px yellow;
+  }
+`
+
 const Symbs = () => {
+  const dis = useAppDispatch()
+  const userUID = useAppSelector(state => state.fire.userUID)
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
-  if (pageDoc)
+  
+  const createNewHandler = async() => {
+    // add emty to firebase
+    createNewSym(userUID, pageDoc.docId)
+    if(userUID){
+      ;(async()=>{
+        const obj = await getFire(userUID)
+        dis(addUserDocs(obj))
+      })()
+    }
+    
+  }
+  if (pageDoc){
+    const syms = pageDoc.syms
+
     return (
       <ul>
-        {pageDoc.syms.map((sym: any) => (
-          <Symb key={sym.symId}>{sym.body}</Symb>
-        ))}
+        {syms.map((sym: any) => (
+          <Symb key={sym.symId} sym={sym} valueIN={sym.body}></Symb>
+        ))} 
+        <MyLi onClick={createNewHandler}>new doc</MyLi>
       </ul>
-    )
+    )}
   else return <li>none to show</li>
 }
 
 ///////////--------------------------------------////////////////
 
-const DocTitle = () => {
+const EditH1 = styled.h1`
+  &:focus{
+    outline: 0px solid transparent;
+  }
+
+`
+const DocTitle: React.FC<{valueIN: string, doc: any}> = ({ valueIN, doc }) => {
   const pageDoc = useAppSelector(state => state.fire.pageDoc)
-  if (pageDoc) return <h1>{pageDoc.title}</h1>
+  //console.log('=--------------------');
+  
+  //console.log(pageDoc); 
+  
+  const dis = useAppDispatch()
+  const h1Ref = useRef<HTMLDivElement>(null)
+  const userUID = useAppSelector(state => state.fire.userUID)
+  useEffect(() => {
+
+    onFocus(
+      h1Ref.current, 
+      () => {}, 
+      (target) => {
+        if(target.textContent){
+          dis(updateTitle({
+              title: target.textContent,
+              docId: pageDoc.docId
+          }))
+          updateTitleFire(userUID, pageDoc.docId, target.textContent)
+        }
+      }
+    )
+
+  }, [dis])
+  if (valueIN) return (
+    <EditH1 contentEditable suppressContentEditableWarning ref={h1Ref}>{valueIN}</EditH1>
+  )
   else return <h1>loading...</h1>
 }
 
