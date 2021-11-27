@@ -129,7 +129,7 @@ const DocTitle: React.FC<{valueIN: string, doc: any}> = ({ valueIN, doc }) => {
     onFocus(
       h1Ref.current, 
       () => {}, 
-      (target) => {
+      (target: any) => {
         if(target.textContent){
           dis(updateTitle({
               title: target.textContent,
