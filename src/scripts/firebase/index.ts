@@ -5,6 +5,7 @@ import { getDocs, setDoc } from '@firebase/firestore'
 import { getFirestore } from 'firebase/firestore'
 import { initializeApp } from 'firebase/app'
 
+// to hide the values of api keys & stuff
 require('dotenv').config() 
 
 const firebaseConfig = {
@@ -15,13 +16,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 }
-//   REACT_APP_APIKEY=AIzaSyCvsodHsopMmaVtvpXxlDtW9gX-JT9yI1E
-// REACT_APP_AUTH_DOMAIN=symbiote-project.firebaseapp.com
-// REACT_APP_PROJECT_ID=symbiote-project
-// REACT_APP_STORAGE_BUCKET=symbiote-project.appspot.com
-// REACT_APP_MESSAGING_SENDER_ID=939051817023
-// REACT_APP_APP_ID=1:939051817023:web:a63c114e9b9ba6110b808a
-// REACT_APP_MEASUREMENT_ID=G-LNNPYZ7QSX
 
 // Initialize Firebase
 initializeApp(firebaseConfig)
