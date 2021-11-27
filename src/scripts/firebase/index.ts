@@ -2,11 +2,12 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
 import { getDocs, setDoc } from '@firebase/firestore'
 
+import { Data } from 'scripts'
 import { getFirestore } from 'firebase/firestore'
 import { initializeApp } from 'firebase/app'
 
 // to hide the values of api keys & stuff
-require('dotenv').config() 
+require('dotenv').config()
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -19,9 +20,13 @@ const firebaseConfig = {
 
 // Initialize Firebase
 initializeApp(firebaseConfig)
+
+// exported below
 const db = getFirestore()
 const auth = getAuth()
 
+
+// get firestore userDocs based on user uid
 const getFire = async (userUID: string) => {
   let userDocsArray: any = []
   if (userUID) {
@@ -29,18 +34,17 @@ const getFire = async (userUID: string) => {
       collection(db, 'users', userUID, 'userDocs')
     )
 
+    // For each doc, push doc properties and each sym properties to the userDocsArray. 
+    // Used for-loops for async/await functionality.
     for (let i = 0; i < userDocsSnap.docs.length; i++) {
       let doc = userDocsSnap.docs[i]
-      // console.log(`docid => ${doc.id} `);
-      // console.log(doc.data());
 
-      const syms = await getDocs(
-        collection(db, 'users', userUID, 'userDocs', doc.id, 'syms')
-      )
+      const syms = await 
+        getDocs(collection(db, 'users', userUID, 'userDocs', doc.id, 'syms'))
 
+      // set new sym array for each doc
       let symsArray: any = []
-
-      // console.log(syms.docs);
+      // For each sym add properties to symsArray
       for (let i = 0; i < syms.docs.length; i++) {
         let sym = syms.docs[i]
         symsArray = [
@@ -50,36 +54,35 @@ const getFire = async (userUID: string) => {
             symId: sym.id,
             order: sym.data().order,
             docId: doc.id,
-          },
+          }
         ]
-        // console.log({symsArray});
       }
+
       userDocsArray = [
         ...userDocsArray,
         { title: doc.data().title, docId: doc.id, syms: symsArray },
       ]
-      //console.log({userDocsArray});
     }
+    return userDocsArray
   }
 
-  return userDocsArray
 }
 
 const updateSymFire = async (
-  userUID: any,
-  docId: any,
-  sym: any,
+  userUID: string,
+  sym: Data.symType,
   body: string
 ) => {
   await setDoc(
-    doc(db, 'users', userUID, 'userDocs', docId, 'syms', sym.symId),
-    {
+    doc(db, 'users', userUID, 'userDocs', sym.docId, 'syms', sym.symId), {
       body,
-      order: sym.oder || 1,
+      order: sym.order || 1,
     }
   )
 }
-const updateTitleFire = async (userUID: any, docId: any, title: string) => {
+
+////////////////////////////////////////////////////////////////////
+const updateTitleFire = async (userUID: string, docId: string, title: string) => {
   //console.log({docId});
 
   await setDoc(doc(db, 'users', userUID, 'userDocs', docId), {
@@ -87,26 +90,26 @@ const updateTitleFire = async (userUID: any, docId: any, title: string) => {
   })
 }
 
-const createNewDoc = async (userUID: any) => {
+const createNewDoc = async (userUID: string) => {
+  // add title
   const docRef = await addDoc(collection(db, 'users', userUID, 'userDocs'), {
-    title: 'empty',
+    title: 'untitled',
   })
 
-
+  // add one sym 
   addDoc(collection(db, 'users', userUID, 'userDocs', docRef.id, 'syms'), {
-    body: "so... what's up?",
+    body: "___",
     order: 1,
     docId: docRef.id,
   })
 }
 
-const createNewSym = async (userUID: any, docId: any) => {
-  const docRef = await addDoc(collection(db, 'users', userUID, 'userDocs', docId, 'syms'), {
+const createNewSym = async (userUID: string, docId: string) => {
+  addDoc(collection(db, 'users', userUID, 'userDocs', docId, 'syms'), {
     body: 'wait a minute',
     order: 1,
     docId
   })
-
 }
 
 
@@ -119,11 +122,11 @@ const googleLogin = async () => {
   return result
 }
 
-const deleteSym = async(userUID: any, docId: any, symId: any) => {
-  deleteDoc(doc(db, "users", userUID, 'userDocs', docId , 'syms', symId));
+const deleteSym = async (userUID: string, docId: string, symId: string) => {
+  deleteDoc(doc(db, "users", userUID, 'userDocs', docId, 'syms', symId));
 }
-const deleteUserDoc= async(userUID: any, docId: any) => {
-  deleteDoc(doc(db, "users", userUID, 'userDocs', docId ));
+const deleteUserDoc = async (userUID: string, docId: string) => {
+  deleteDoc(doc(db, "users", userUID, 'userDocs', docId));
 }
 
 export {
