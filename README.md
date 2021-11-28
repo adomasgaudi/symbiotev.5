@@ -1,44 +1,48 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
-## Available Scripts
+## Symbiote Project
 
-In the project directory, you can run:
+This is a note editor website where you can create read update and delete your notes and documents. 
+Follow the instructions to get started.
 
-### `npm start`
+## How to use
+- Step 1. Open one of the links
+- Step 2. Type in the seachbar what photos you wan't to find. 
+- Step 3. Enjoy your selection
+- 
+### Go to [symbiote-project.web.app](https://symbiote-project.web.app/)
+Log in using your google account. Currently other login methods are not supported.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The sidebar will appear and here you can add your first document. 
+### Add 
+A new document will appear on the page with some initial text where you can edit the text, the title delete (ctrl + del) and add new lines.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Delete 
+To delete a doc press the red "X". To delete a text line click on the line you want to delete and pres Ctrl + Del.
 
-### `npm test`
+### Sidebar
+You can close and open the sidebar if you'd like. 
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Auto saving
+Don't worry about saving the documents are saved every time you click away from the text.
 
-### `npm run build`
+# Dependencies & tech
+This project uses these technologies:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tools
+- The website is built using JavaScript library [react](https://reactjs.org/) with [typescript](https://www.typescriptlang.org/), [redux](https://redux.js.org/), [redux toolkit](https://redux-toolkit.js.org/), [router](https://reactrouter.com/).
+- The website is Hosted on the [Firebase](https://firebase.google.com/) platform and uses Firebase Authentication and the Firestore Database.
+- 
+### Dependecies used: ###
+  * [Matrial UI](https://mui.com/) - React User Interface library 
+  * [Styled Components](https://styled-components.com/) - library built for React that allows you to use component-level styles using a technique called CSS-in-JS.
+  * [Dotenv](https://github.com/motdotla/dotenv) - create environmental variables from .env file
+  
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
