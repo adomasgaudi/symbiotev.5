@@ -5,11 +5,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 This is a note editor website where you can create read update and delete your notes and documents. 
 Follow the instructions to get started.
 
-## How to use
-- Step 1. Open one of the links
-- Step 2. Type in the seachbar what photos you wan't to find. 
-- Step 3. Enjoy your selection
-- 
 ### Go to [symbiote-project.web.app](https://symbiote-project.web.app/)
 Log in using your google account. Currently other login methods are not supported.
 
@@ -32,7 +27,7 @@ This project uses these technologies:
 ## Tools
 - The website is built using JavaScript library [react](https://reactjs.org/) with [typescript](https://www.typescriptlang.org/), [redux](https://redux.js.org/), [redux toolkit](https://redux-toolkit.js.org/), [router](https://reactrouter.com/).
 - The website is Hosted on the [Firebase](https://firebase.google.com/) platform and uses Firebase Authentication and the Firestore Database.
-- 
+
 ### Dependecies used: ###
   * [Matrial UI](https://mui.com/) - React User Interface library 
   * [Styled Components](https://styled-components.com/) - library built for React that allows you to use component-level styles using a technique called CSS-in-JS.
