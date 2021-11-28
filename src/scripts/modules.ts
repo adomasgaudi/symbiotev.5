@@ -9,6 +9,7 @@ namespace Data {
   }
   export type docType = {
     title: string,
+    order: number,
     docId: string,
     syms: symType[] | null
   }

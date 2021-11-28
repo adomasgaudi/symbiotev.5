@@ -1,39 +1,8 @@
 import 'styled-components';
 
-import { Theme } from '@material-ui/core/styles';
-import { createGlobalStyle } from "styled-components";
-import { createTheme } from "@material-ui/core";
+import { createGlobalStyle } from 'styled-components/macro';
 
-interface CustomTheme {
-    bg: {
-        main: string,
-        light: string
-    }, 
-    text: {
-        main: string,
-        light: string
-    }
-}
-declare module '@material-ui/core/styles' {
-    interface Theme extends CustomTheme {}
-    interface ThemeOptions extends CustomTheme {}
-}
-
-declare module 'styled-components' {
-    export interface DefaultTheme extends Theme {}
-}
-
-
-
-
-const fontfamilyArray = [
-  "'Azeret Mono', monospace",
-  "'Roboto', sans-serif;",
-  "'Yellowtail', cursive;",
-  "'proggy', monospace"
-]
-
-const GlobalStylesGeneral = createGlobalStyle` 
+const BaseCSS = createGlobalStyle` 
 
   // general init styles
   html{ 
@@ -48,61 +17,42 @@ const GlobalStylesGeneral = createGlobalStyle`
   *{box-sizing: border-box}
 
 `
-
-const GlobalStylesOther = createGlobalStyle`  
+const FunkyCSS = createGlobalStyle`  
   
   // general styles
   *{
-    // outline: 1px dashed red!important;
+    /* outline: 1px dashed #ffd5d5 !important;  */
   }
+
 
   body{
     border-radius: 2px; 
-    font-size: 20px;
-    font-family: ${fontfamilyArray[3]};
   }
 
-  p{opacity: 0.6; line-height: 1.5;}
+  p{opacity: 0.6; line-height: 1.5;} 
 
   img{max-width: 100%}
 `
 
+//
 
+//
 
-const theme = createTheme({
-  typography: {
-    fontFamily: 'proggy'
-  },
-  overrides: {
-    MuiButton: {
-      root: {
-        fontWeight: "bold",
-        backgroundColor: "red",
-        margin: "10px",
-        "&:hover": {
-          backgroundColor: "green"
-        }
-      }
-    }
-  },
-  palette: {
-    primary: {
-      main: '#3F8AE0'
-    },
-    secondary: {
-      main: '#326eb3'
-    }
-  },
-  bg: {
-    main: '#fff',
-    light: '#F4F5F7'
-  },
-  text: {
-    main: '#172B4D',
-    light: '#262930'
+//
+
+//
+
+//
+
+const GeneralCSS = createGlobalStyle` 
+  body{
+    font-family: ${({theme}) => theme.typography.fontFamily};
+    font-size: ${({theme}) => theme.typography.fontSize}px;
+    background: ${({ theme: {bg}  }) => bg?.main };
+    
   }
-});
+`
 
 
 
-export { GlobalStylesGeneral, GlobalStylesOther, theme }
+export { BaseCSS, FunkyCSS, GeneralCSS }

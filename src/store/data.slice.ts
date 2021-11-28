@@ -1,5 +1,6 @@
 import { Data, P } from 'scripts'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState: any
   // {

@@ -60,7 +60,7 @@ const getFire = async (userUID: string) => {
 
       userDocsArray = [
         ...userDocsArray,
-        { title: doc.data().title, docId: doc.id, syms: symsArray },
+        { title: doc.data().title, docId: doc.id, order: doc.data().order, syms: symsArray },
       ]
     }
     return userDocsArray
@@ -75,51 +75,60 @@ const updateSymFire = async (
 ) => {
   await setDoc(
     doc(db, 'users', userUID, 'userDocs', sym.docId, 'syms', sym.symId), {
-      body,
-      order: sym.order || 1,
+      body
     }
   )
 }
 
 ////////////////////////////////////////////////////////////////////
 const updateTitleFire = async (userUID: string, docId: string, title: string) => {
-  //console.log({docId});
-
   await setDoc(doc(db, 'users', userUID, 'userDocs', docId), {
     title,
   })
 }
 
+// add next doc , doc.id is added automatically
 const createNewDoc = async (userUID: string) => {
+  const userDocsSnap = await getDocs(collection(db, 'users', userUID, 'userDocs'))
+  const length = userDocsSnap.docs.length
   // add title
   const docRef = await addDoc(collection(db, 'users', userUID, 'userDocs'), {
     title: 'untitled',
+    order: length + 1
   })
 
-  // add the first sym 
+  // add the first sym (sym.id is added automatically)
   addDoc(collection(db, 'users', userUID, 'userDocs', docRef.id, 'syms'), {
-    body: "___",
+    body: "enter text",
     order: 1,
     docId: docRef.id,
   })
 }
 
+// add next sym
 const createNewSym = async (userUID: string, docId: string) => {
+  const symsSnap = 
+    await getDocs(collection(db, 'users', userUID, 'userDocs', docId, 'syms'))
+  const length = symsSnap.docs.length
+  
+  // sym id is added auto
   addDoc(collection(db, 'users', userUID, 'userDocs', docId, 'syms'), {
-    body: 'wait a minute',
-    order: 1,
+    body: '//',
+    order: length + 1,
     docId
   })
 }
 
 
 const googleLogin = async () => {
-  // // Sign in using a popup.
-  const provider = new GoogleAuthProvider()
-  provider.addScope('profile')
-  provider.addScope('email')
-  const result = await signInWithPopup(auth, provider)
-  return result
+ 
+    const provider = new GoogleAuthProvider()
+    provider.addScope('profile')
+    provider.addScope('email')
+    const result = await signInWithPopup(auth, provider)
+    return result
+  
+  
 }
 
 const deleteSym = async (userUID: string, docId: string, symId: string) => {

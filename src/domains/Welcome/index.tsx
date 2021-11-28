@@ -1,11 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth'
-import { updateUserUID, useAppDispatch } from 'store'
+import { updateDisplayName, updateUserUID, useAppDispatch } from 'store'
 
-import { Button } from '@mui/material'
-import React from 'react'
-import { auth } from 'scripts'
+import { ButtonX } from 'comps'
 import {googleLogin} from 'scripts'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const CenterDiv = styled.div`
   display: flex;
@@ -16,16 +13,18 @@ const CenterDiv = styled.div`
 
 
 const Welcome = () => {
-
   const dis = useAppDispatch()
   const googleLoginHandler = async() => {
     const res = await googleLogin()
-    dis(updateUserUID(res.user.uid))
+    if(res){
+      dis(updateDisplayName(res.user.displayName))
+      dis(updateUserUID(res.user.uid))
+    }
   }
   
   return (
     <CenterDiv>
-      <Button onClick={googleLoginHandler} >Log-In with Google</Button>
+      <ButtonX onClick={googleLoginHandler} >LOGIN with GOOGLE</ButtonX>
     </CenterDiv>
   )
 }

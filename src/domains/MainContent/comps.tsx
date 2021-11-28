@@ -1,9 +1,10 @@
-import { addUserDocs, updateSym, updateTitle, useAppDispatch, useAppSelector } from 'store'
+import { addPageDoc, addUserDocs, updateSym, updateTitle, useAppDispatch, useAppSelector } from 'store'
 import {createNewSym, deleteSym, getFire, updateSymFire, updateTitleFire} from 'scripts'
 import { useEffect, useRef } from 'react'
 
+import AddIcon from '@mui/icons-material/Add';
 import {onFocus} from 'scripts'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 /////////-------------------------------//////////////
 
@@ -51,11 +52,12 @@ const Symb: React.FC<{valueIN: string|null, sym: any}> = ({valueIN, sym}) => {
       if (e.key == 'Backspace' && e.ctrlKey) {
         //console.log('DELETED');
         
-        deleteSym(userUID, sym.docId, sym.symId )};
+      deleteSym(userUID, sym.docId, sym.symId )};
       if(userUID){
         ;(async()=>{
           const obj = await getFire(userUID)
           dis(addUserDocs(obj))
+          dis(addPageDoc(obj[0]))
         })()
       }
     })
@@ -89,6 +91,7 @@ const Symbs = () => {
       ;(async()=>{
         const obj = await getFire(userUID)
         dis(addUserDocs(obj))
+        dis(addPageDoc(obj[0]))
       })()
     }
     
@@ -101,7 +104,7 @@ const Symbs = () => {
         {syms.map((sym: any) => (
           <Symb key={sym.symId} sym={sym} valueIN={sym.body}></Symb>
         ))} 
-        <MyLi onClick={createNewHandler}>new doc</MyLi>
+        <MyLi onClick={createNewHandler}><AddIcon sx={{fontSize: "medium"}}/></MyLi>
       </ul>
     )}
   else return <li>none to show</li>

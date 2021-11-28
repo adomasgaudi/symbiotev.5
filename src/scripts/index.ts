@@ -5,6 +5,7 @@ import {
   createNewSym,
   db,
   deleteSym,
+  deleteUserDoc,
   getFire,
   googleLogin,
   updateSymFire,
@@ -24,5 +25,6 @@ export {
   googleLogin,
   createNewSym,
   deleteSym,
+  deleteUserDoc,
 }
 export type { Data, P }

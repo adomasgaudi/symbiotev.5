@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container"
-import styled from "styled-components"
+import styled from 'styled-components/macro'
 
 const StyledDiv = styled.div`
 /* padding: auto; */
