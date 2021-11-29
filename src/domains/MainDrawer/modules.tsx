@@ -1,24 +1,40 @@
+import { ButtonX, DivRow, Typo } from 'comps'
 import { MyLi, TextSpan, Xtag } from './styles'
-import { addPageDoc, addUserDocs, useAppDispatch, useAppSelector } from 'store'
-import { createNewDoc, deleteUserDoc, getFire } from 'scripts'
+import {
+  addPageDoc,
+  addUserDocs,
+  toggleTheme,
+  updateDisplayName,
+  updateUserUID,
+  useAppDispatch,
+  useAppSelector,
+} from 'store'
+import { auth, createNewDoc, deleteUserDoc, getFire } from 'scripts'
 
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add'
 import Box from '@mui/system/Box'
-import { ButtonX } from 'comps'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Drawer from '@mui/material/Drawer'
+import { signOut } from 'firebase/auth'
 import styled from 'styled-components/macro'
 import { toggleSidebar } from 'store'
 import { useTheme } from '@mui/material/styles'
+
+const DrawerS = styled(Drawer)`
+  & .MuiDrawer-paper {
+    background: ${({ theme }) => theme.bg?.main};
+    ${({ theme }) => theme.text?.col}
+    border-right: 1px solid ${({ theme }) => theme.text?.main}
+  }
+`
 
 const DrawerX: React.FC = ({ children }) => {
   const sidebarON = useAppSelector(state => state.ui.sidebarON)
   const drawerWidth = useAppSelector(state => state.ui.drawerWidth)
   const theme = useTheme()
-  console.log({ sidebarON })
 
   return (
-    <Drawer
+    <DrawerS
       variant='persistent'
       anchor='left'
       open={sidebarON}
@@ -33,7 +49,7 @@ const DrawerX: React.FC = ({ children }) => {
       }}
     >
       {children}
-    </Drawer>
+    </DrawerS>
   )
 }
 
@@ -63,23 +79,31 @@ const DrawerHeader = styled(Box)`
 
 const DrawerHeaderX = () => {
   const dis = useAppDispatch()
+  const displayName = useAppSelector(store => store.data.displayName)
+
   const toggleHandle = () => dis(toggleSidebar())
+  
   return (
     <DrawerHeader>
-      <ButtonX onClick={toggleHandle} variant='text'>
-        <ChevronLeftIcon />CLOSE
-      </ButtonX>
+      <DivRow>{displayName ? <Typo>{displayName}</Typo> : null}</DivRow>
+
+      <DivRow>
+        <ButtonX onClick={toggleHandle} variant='text'>
+          <ChevronLeftIcon />
+          CLOSE
+        </ButtonX>
+      </DivRow>
     </DrawerHeader>
   )
 }
-
 
 // drawer content
 
 const DrawerContent = () => {
   const dis = useAppDispatch()
-  const userDocs = useAppSelector(state => state.fire.userDocs)
-  const userUID = useAppSelector(state => state.fire.userUID)
+  const userDocs = useAppSelector(state => state.data.userDocs)
+  const userUID = useAppSelector(state => state.data.userUID)
+  const displayName = useAppSelector(store => store.data.displayName)
 
   const docOpenHandler = (docId: string) => {
     let obj = userDocs.filter((doc: any) => doc.docId === docId)
@@ -88,9 +112,10 @@ const DrawerContent = () => {
 
   const createNewDocHandler = async () => {
     // add emty to firebase
-    createNewDoc(userUID)
+
     if (userUID) {
       ;(async () => {
+        await createNewDoc(userUID)
         const obj = await getFire(userUID)
         dis(addUserDocs(obj))
         dis(addPageDoc(obj[0]))
@@ -101,8 +126,8 @@ const DrawerContent = () => {
   const deleteDocHandler = async (docId: string) => {
     console.log('DELETED')
     deleteUserDoc(userUID, docId)
-    if(userUID){
-      ;(async()=>{
+    if (userUID) {
+      ;(async () => {
         const obj = await getFire(userUID)
         dis(addUserDocs(obj))
         dis(addPageDoc(obj[0]))
@@ -110,20 +135,50 @@ const DrawerContent = () => {
     }
   }
 
+  const logOutHandler = async () => {
+    await signOut(auth)
+    window.location.reload()
+    dis(updateDisplayName(null))
+    dis(updateUserUID(null))
+  }
+
+  const themeHandle = () => dis(toggleTheme())
+
+
+
+
+
+  let arr = [...userDocs]
+  const orderedDocs =  arr.sort((a: any, b: any) => {
+    return a.order - b.order
+  })
+
+
+
+
+
+
+
+
   return (
     <>
-      {userDocs ? 
-        (<ul>
-            {userDocs.map((doc: any) => (
-              <MyLi key={doc.docId} onClick={() => docOpenHandler(doc.docId)}>
-                <TextSpan>{doc.title}</TextSpan>
-                <Xtag onClick={() => deleteDocHandler(doc.docId)}>X</Xtag>
-              </MyLi>
-            ))}
-            <MyLi onClick={createNewDocHandler}><AddIcon sx={{fontSize: "medium"}}/></MyLi>
-        </ul>) : 
-        (<h3>Couldn't get user docs</h3>)
-      }
+      <ButtonX onClick={themeHandle}>Theme</ButtonX>
+      {displayName ? <ButtonX onClick={logOutHandler}>LOG-OUT</ButtonX> : null}
+      {orderedDocs ? (
+        <ul>
+          {orderedDocs.map((doc: any) => (
+            <MyLi key={doc.docId} onClick={() => docOpenHandler(doc.docId)}>
+              <TextSpan>{doc.title}</TextSpan>
+              <Xtag onClick={() => deleteDocHandler(doc.docId)}>X</Xtag>
+            </MyLi>
+          ))}
+          <MyLi onClick={createNewDocHandler}>
+            <AddIcon sx={{ fontSize: 'medium' }} />
+          </MyLi>
+        </ul>
+      ) : (
+        <h3>Couldn't get user docs</h3>
+      )}
     </>
   )
 }

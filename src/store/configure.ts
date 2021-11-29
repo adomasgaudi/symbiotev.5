@@ -5,7 +5,7 @@ import uiSlice  from "./ui.slice"
 const store: any = configureStore({
   reducer:{
     ui: uiSlice.reducer,
-    fire: dataSlice.reducer
+    data: dataSlice.reducer
   }
 })
 

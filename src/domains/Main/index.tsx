@@ -1,4 +1,4 @@
-import {ButtonX, DivMA, MainIn} from './styles'
+import { DivMA, MainIn } from './styles'
 import { MainContent, MainDrawer, MainNavBar } from 'domains'
 
 const Main = () => {

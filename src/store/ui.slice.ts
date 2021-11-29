@@ -1,4 +1,3 @@
-import { P } from 'scripts'
 import {createSlice} from '@reduxjs/toolkit'
 
 const uiSlice = createSlice({
@@ -6,14 +5,15 @@ const uiSlice = createSlice({
   initialState: {
     sidebarON: true,
     drawerWidth: 300,
-    themeId: 1,
+    themeId: 3,
   },
   reducers: {
     toggleSidebar: (state) => {
       state.sidebarON ? state.sidebarON = false : state.sidebarON = true
     },
-    toggleTheme: (state, action: P.a<number>) => {
-      state.themeId = action.payload
+    toggleTheme: (state) => {
+      if(state.themeId >= 3) state.themeId = 0;
+      state.themeId ++
     }
   }
 })

@@ -7,7 +7,7 @@ import dataSlice, {
   updateTitle,
   updateUserUID
 } from './data.slice'
-import uiSlice, { toggleSidebar } from './ui.slice'
+import uiSlice, { toggleSidebar, toggleTheme } from './ui.slice'
 
 import store from './configure'
 
@@ -23,7 +23,8 @@ export {
   updateUserUID, 
   updateDisplayName, 
   updateSym, 
-  updateTitle
+  updateTitle,
+  toggleTheme
 }
 
 export type { RootState }

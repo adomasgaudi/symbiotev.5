@@ -1,4 +1,4 @@
-const onFocus = (
+const onFocusBlur = (
   target: HTMLElement | null,
   callbackFocus: (target: any, e: any) => void,
   callbackBlur: (target: any, e: any) => void
@@ -13,4 +13,4 @@ const onFocus = (
   }
 }
 
-export {onFocus}
+export { onFocusBlur}

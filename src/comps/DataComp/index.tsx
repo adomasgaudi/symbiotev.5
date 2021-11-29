@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 const DataComp = () => {
   const dis = useAppDispatch()
-  const userUID = useAppSelector(state => state.fire.userUID)
+  const userUID = useAppSelector(state => state.data.userUID)
   
   
   useEffect(() => {

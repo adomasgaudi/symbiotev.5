@@ -8,8 +8,8 @@ cursor: pointer;
 
 const TextSpan = styled.span`
 display: block;
-background: yellow;
 &:hover{
+  background: ${({theme}) => theme.text?.hightlight};
   padding-right: 100px;
   transition: .1s;
 }

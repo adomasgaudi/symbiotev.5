@@ -1,23 +1,15 @@
-import {DivRow, Typo} from './styles'
-import { toggleSidebar, updateDisplayName, updateUserUID, useAppDispatch, useAppSelector } from 'store'
+import { toggleSidebar, useAppDispatch, useAppSelector } from 'store'
 
 import { AppBarY } from './modules'
 import {ButtonX} from 'comps'
 import { ChevronRightIconX } from './styles'
-import { auth } from 'scripts'
-import { signOut } from '@firebase/auth'
+import {DivRow} from 'comps'
 
 const MainNavBar = () => {
   const dis = useAppDispatch()
   const sidebarON = useAppSelector(state => state.ui.sidebarON)
-  const displayName = useAppSelector(state => state.fire.displayName)
 
-  const logOutHandler = async () => {
-    await signOut(auth)
-    window.location.reload()
-    dis(updateDisplayName(null))
-    dis(updateUserUID(null))
-  }
+
 
   return (
     <AppBarY>
@@ -30,16 +22,6 @@ const MainNavBar = () => {
           </>)}
         </DivRow>
 
-        <DivRow>
-          {displayName ? <Typo>{displayName} - documents</Typo> : null}
-        </DivRow>
-
-
-        <DivRow>
-          {displayName ? (
-            <ButtonX onClick={logOutHandler}>LOG-OUT</ButtonX>
-          ) : null}
-        </DivRow>
 
     </AppBarY>
   )

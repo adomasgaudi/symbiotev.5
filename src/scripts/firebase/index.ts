@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { getDocs, setDoc } from '@firebase/firestore'
 
 import { Data } from 'scripts'
@@ -33,12 +33,13 @@ const getFire = async (userUID: string) => {
     const userDocsSnap = await getDocs(
       collection(db, 'users', userUID, 'userDocs')
     )
+    
 
     // For each doc, push doc properties and each sym properties to the userDocsArray. 
     // Used for-loops for async/await functionality.
     for (let i = 0; i < userDocsSnap.docs.length; i++) {
       let doc = userDocsSnap.docs[i]
-
+      
       const syms = await 
         getDocs(collection(db, 'users', userUID, 'userDocs', doc.id, 'syms'))
 
@@ -81,10 +82,18 @@ const updateSymFire = async (
 }
 
 ////////////////////////////////////////////////////////////////////
-const updateTitleFire = async (userUID: string, docId: string, title: string) => {
-  await setDoc(doc(db, 'users', userUID, 'userDocs', docId), {
-    title,
-  })
+
+
+
+const updateTitleFire = async (userUID: string, pageDoc: any, title: string) => {  
+  try {
+    await updateDoc(doc(db, "users", userUID, 'userDocs', pageDoc.docId), {
+      title
+    });
+    console.log("Document updated " );
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 }
 
 // add next doc , doc.id is added automatically
@@ -120,6 +129,13 @@ const createNewSym = async (userUID: string, docId: string) => {
 }
 
 
+const deleteSym = async (userUID: string, docId: string, symId: string) => {
+  deleteDoc(doc(db, "users", userUID, 'userDocs', docId, 'syms', symId));
+}
+const deleteUserDoc = async (userUID: string, docId: string) => {
+  deleteDoc(doc(db, "users", userUID, 'userDocs', docId));
+}
+
 const googleLogin = async () => {
  
     const provider = new GoogleAuthProvider()
@@ -131,12 +147,6 @@ const googleLogin = async () => {
   
 }
 
-const deleteSym = async (userUID: string, docId: string, symId: string) => {
-  deleteDoc(doc(db, "users", userUID, 'userDocs', docId, 'syms', symId));
-}
-const deleteUserDoc = async (userUID: string, docId: string) => {
-  deleteDoc(doc(db, "users", userUID, 'userDocs', docId));
-}
 
 export {
   getFire,

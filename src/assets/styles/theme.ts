@@ -8,7 +8,8 @@ interface CustomTheme {
     }, 
     text?: {
         main?: string,
-        col?: string
+        col?: string,
+        hightlight?: string,
     },
     flex?: {
       row?: string
@@ -35,13 +36,15 @@ const fontfamilyArray = [
 
 const themeFunction = (font: number, color: number) => {
 
-  let colors = ['red', 'blue'];
-  const fontSize = 22
+  let background = ['#fdfbf8', '#111'];
+  let textColor = ['#425564', '#eee']
+  const fontSize = [12, 12, 12, 22]
+  const hightlight = ['#ffa', '#880']
 
   return createTheme({
     typography: {
       "fontFamily": `${fontfamilyArray[font]}`,
-      "fontSize": fontSize,
+      "fontSize": fontSize[font],
     },
     palette: {
       primary: {
@@ -56,13 +59,14 @@ const themeFunction = (font: number, color: number) => {
       flex-direction: row;`
     },
     bg: {
-      main: '#fdfbf8'
+      main: background[color]
     },
     text: {
-      main: '#425564',
+      main: textColor[color],
       col: `font-family: ${fontfamilyArray[font]};
-      font-size: ${fontSize}px;
-      color: #425564;`
+      font-size: ${fontSize[font]}px;
+      color: ${textColor[color]};`,
+      hightlight: hightlight[color]
     }
   })
 }

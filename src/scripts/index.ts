@@ -12,14 +12,14 @@ import {
   updateTitleFire
 } from './firebase'
 
-import { onFocus } from './utils'
+import { onFocusBlur } from './utils'
 
 export {
   auth,
   db,
   getFire,
   updateSymFire,
-  onFocus,
+  onFocusBlur,
   updateTitleFire,
   createNewDoc,
   googleLogin,

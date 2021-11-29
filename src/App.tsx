@@ -9,10 +9,10 @@ const CssComp = () => (<><BaseCSS /><FunkyCSS /><GeneralCSS /></>)
 
 const App = () => {
   const themeId = useAppSelector(state => state.ui.themeId)  
-  const userUID = useAppSelector(state => state.fire.userUID)  
+  const userUID = useAppSelector(state => state.data.userUID)  
 
   return (
-    <ThemeProvider theme={ themeFunction(3, 1) }>
+    <ThemeProvider theme={ themeFunction(themeId, 0) }>
       <CssComp />
       <div className='App'>
         <DataComp />

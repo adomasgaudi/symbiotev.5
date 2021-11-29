@@ -67,9 +67,13 @@ const dataSlice = createSlice({
     // ////////////////////////////////////////////
     updateTitle: (state, action: P.a<any>) => {
       state.userDocs.forEach((doc: any) => {
-        if (doc.docId === action.payload.docId) doc.title = action.payload.title
+        if (doc.docId === action.payload.docId) {
+          doc.title = action.payload.title;
+          doc.order = action.payload.order;
+          doc.docId = action.payload.docId
+        }
       })
-      if (state.pageDoc) state.pageDoc.title = action.payload.title
+      state.pageDoc.title = action.payload.title
     }
   }
 })

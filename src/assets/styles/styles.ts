@@ -49,7 +49,7 @@ const GeneralCSS = createGlobalStyle`
     font-family: ${({theme}) => theme.typography.fontFamily};
     font-size: ${({theme}) => theme.typography.fontSize}px;
     background: ${({ theme: {bg}  }) => bg?.main };
-    
+    ${({theme}) => theme.text?.col} 
   }
 `
 
