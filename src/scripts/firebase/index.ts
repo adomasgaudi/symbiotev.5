@@ -115,10 +115,11 @@ const createNewDoc = async (userUID: string) => {
 }
 
 // add next sym
-const createNewSym = async (userUID: string, docId: string) => {
+const createNewSym = async (userUID: string, docId: string, order?: number) => {
   const symsSnap = 
     await getDocs(collection(db, 'users', userUID, 'userDocs', docId, 'syms'))
-  const length = symsSnap.docs.length
+  let length = symsSnap.docs.length
+  if(order) length = order 
   
   // sym id is added auto
   addDoc(collection(db, 'users', userUID, 'userDocs', docId, 'syms'), {

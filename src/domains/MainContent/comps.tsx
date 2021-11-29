@@ -38,7 +38,9 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
   const dis = useAppDispatch()
   const divRef = useRef<HTMLDivElement>(null)
   const userUID = useAppSelector(state => state.data.userUID)
-  const handleBlur = ( ) => {
+  const pageDoc = useAppSelector(state => state.data.pageDoc)
+
+  const handleBlur = () => {
     if (divRef.current?.textContent) {
       dis(
         updateSym({
@@ -48,10 +50,10 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
           order: sym.order,
         })
       )
-      
+
       updateSymFire(userUID, sym, divRef.current?.textContent)
     }
-  } 
+  }
 
   const handleKeyDown = (e: any) => {
     if (e.key === 'Backspace' && e.ctrlKey) {
@@ -63,23 +65,38 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
           dis(addPageDoc(obj[0]))
         })()
       }
-    
+    }
+    if (e.key === 'Enter' && !e.ctrlKey ) {
+      e.preventDefault()
+      if (userUID) {
+        ;(async () => {
+          await createNewSym(userUID, pageDoc.docId, sym.order)
+          if (userUID) {
+            ;(async () => {
+              const userDocsArr = await getFire(userUID)
+              dis(addUserDocs(userDocsArr))
+              let thisDoc = userDocsArr.filter(
+                (doc: any) => doc.docId === pageDoc.docId
+              )
+              dis(addPageDoc(thisDoc[0]))
+            })()
+          }
+        })()
+      }
     }
   }
-  
+
   useEffect(() => {
     let target = divRef.current
-    target?.addEventListener('blur', handleBlur);
-    target?.addEventListener('keydown', handleKeyDown);
+    target?.addEventListener('blur', handleBlur)
+    target?.addEventListener('keydown', handleKeyDown)
     // cleanup this component
     return () => {
-      target?.removeEventListener('blur', handleBlur);
-      target?.addEventListener('keydown', handleKeyDown);
-    };
+      target?.removeEventListener('blur', handleBlur)
+      target?.addEventListener('keydown', handleKeyDown)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [null]);
-
- 
+  }, [null])
 
   return (
     <EditDiv contentEditable suppressContentEditableWarning ref={divRef}>
@@ -88,51 +105,34 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
   )
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const DocTitleX: React.FC<{doc: any, valueIN: any}> = ({doc, valueIN}) =>  {
+const DocTitleX: React.FC<{ doc: any; valueIN: any }> = ({ doc, valueIN }) => {
   const dis = useAppDispatch()
   const h1Ref = useRef<HTMLDivElement>(null)
   const userUID = useAppSelector(state => state.data.userUID)
 
   const handleBlur = (target: any) => {
     if (target.textContent) {
-        dis(
-          updateTitle({
-            title: target.textContent,
-            docId: doc.docId,
-            order: doc.order,
-          })
-        )
-        
-        updateTitleFire(userUID, doc, target.textContent)
+      dis(
+        updateTitle({
+          title: target.textContent,
+          docId: doc.docId,
+          order: doc.order,
+        })
+      )
+
+      updateTitleFire(userUID, doc, target.textContent)
     }
   }
   useEffect(() => {
     let target = h1Ref.current
-    target?.addEventListener('blur', ()=>handleBlur(target));
+    target?.addEventListener('blur', () => handleBlur(target))
     // cleanup this component
     return () => {
-      target?.removeEventListener('blur', handleBlur);
-    };
+      target?.removeEventListener('blur', handleBlur)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-
-
-
+  }, [])
 
   return (
     <EditH1 contentEditable suppressContentEditableWarning ref={h1Ref}>
@@ -140,25 +140,6 @@ const DocTitleX: React.FC<{doc: any, valueIN: any}> = ({doc, valueIN}) =>  {
     </EditH1>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////------------------------------------------/////////
 
@@ -180,23 +161,22 @@ const Symbs = () => {
       ;(async () => {
         const userDocsArr = await getFire(userUID)
         dis(addUserDocs(userDocsArr))
-        let thisDoc = userDocsArr.filter((doc: any) => doc.docId === pageDoc.docId)
-        
-        dis(addPageDoc(thisDoc[0])) 
+        let thisDoc = userDocsArr.filter(
+          (doc: any) => doc.docId === pageDoc.docId
+        )
+
+        dis(addPageDoc(thisDoc[0]))
       })()
     }
   }
 
-
-
-  
   if (pageDoc) {
     let arr = [...pageDoc.syms]
-    const orderedSyms =  arr.sort((a: any, b: any) => {
+    const orderedSyms = arr.sort((a: any, b: any) => {
       return a.order - b.order
     })
+    // console.log({orderedSyms});
     
-
     return (
       <ul>
         <DocTitleX key={pageDoc.docId} doc={pageDoc} valueIN={pageDoc.title} />
@@ -208,17 +188,11 @@ const Symbs = () => {
         </MyLi>
       </ul>
     )
-  } else return <li>none to show</li>
+  } else return <h2>You have no Documents. Create one in the sidebar</h2>
 }
 
 ///////////--------------------------------------////////////////
 
-
-
-
 ///////////////////////////////////////////////////////////////
 
-
 export { Symbs }
-
-
