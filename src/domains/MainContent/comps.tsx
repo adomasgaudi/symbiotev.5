@@ -1,4 +1,13 @@
 import {
+  Data,
+  createNewSym,
+  deleteSym,
+  getFire,
+  updateSymFire,
+  updateTitleFire,
+} from 'scripts'
+import { EditDiv, EditH1, MyLi } from './styles'
+import {
   addPageDoc,
   addUserDocs,
   updateSym,
@@ -6,39 +15,21 @@ import {
   useAppDispatch,
   useAppSelector,
 } from 'store'
-import {
-  createNewSym,
-  deleteSym,
-  getFire,
-  updateSymFire,
-  updateTitleFire,
-} from 'scripts'
 import { useEffect, useRef } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
-import styled from 'styled-components/macro'
 
-/////////-------------------------------//////////////
-const EditH1 = styled.h1`
-  &:focus {
-    outline: 0px solid transparent;
-  }
-`
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 
-const EditDiv = styled.div`
-  &:focus {
-    outline: 0px solid transparent;
-  }
-`
-
-const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
-  valueIN,
-  sym,
-}) => {
+interface SymbFCTypes {
+  valueIN: string | null
+  sym: Data.symType
+}
+const Symb: React.FC<SymbFCTypes> = ({ valueIN, sym }) => {
   const dis = useAppDispatch()
   const divRef = useRef<HTMLDivElement>(null)
   const userUID = useAppSelector(state => state.data.userUID)
-  const pageDoc = useAppSelector(state => state.data.pageDoc)
 
   const handleBlur = () => {
     if (divRef.current?.textContent) {
@@ -54,7 +45,6 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
       updateSymFire(userUID, sym, divRef.current?.textContent)
     }
   }
-
   const handleKeyDown = (e: any) => {
     if (e.key === 'Backspace' && e.ctrlKey) {
       if (userUID) {
@@ -63,24 +53,6 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
           const obj = await getFire(userUID)
           dis(addUserDocs(obj))
           dis(addPageDoc(obj[0]))
-        })()
-      }
-    }
-    if (e.key === 'Enter' && !e.ctrlKey ) {
-      e.preventDefault()
-      if (userUID) {
-        ;(async () => {
-          await createNewSym(userUID, pageDoc.docId, sym.order)
-          if (userUID) {
-            ;(async () => {
-              const userDocsArr = await getFire(userUID)
-              dis(addUserDocs(userDocsArr))
-              let thisDoc = userDocsArr.filter(
-                (doc: any) => doc.docId === pageDoc.docId
-              )
-              dis(addPageDoc(thisDoc[0]))
-            })()
-          }
         })()
       }
     }
@@ -95,8 +67,9 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
       target?.removeEventListener('blur', handleBlur)
       target?.addEventListener('keydown', handleKeyDown)
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [null])
+  }, [])
 
   return (
     <EditDiv contentEditable suppressContentEditableWarning ref={divRef}>
@@ -105,7 +78,13 @@ const Symb: React.FC<{ valueIN: string | null; sym: any }> = ({
   )
 }
 
-const DocTitleX: React.FC<{ doc: any; valueIN: any }> = ({ doc, valueIN }) => {
+/////////////////////////////////////////////////////////////
+
+interface DocTitleXTypes {
+  doc: Data.docType
+  valueIN: string
+}
+const DocTitleX: React.FC<DocTitleXTypes> = ({ doc, valueIN }) => {
   const dis = useAppDispatch()
   const h1Ref = useRef<HTMLDivElement>(null)
   const userUID = useAppSelector(state => state.data.userUID)
@@ -123,6 +102,7 @@ const DocTitleX: React.FC<{ doc: any; valueIN: any }> = ({ doc, valueIN }) => {
       updateTitleFire(userUID, doc, target.textContent)
     }
   }
+
   useEffect(() => {
     let target = h1Ref.current
     target?.addEventListener('blur', () => handleBlur(target))
@@ -142,12 +122,6 @@ const DocTitleX: React.FC<{ doc: any; valueIN: any }> = ({ doc, valueIN }) => {
 }
 
 //////////------------------------------------------/////////
-
-const MyLi = styled.li`
-  &:hover {
-    box-shadow: 0px 1px 0px 0px yellow;
-  }
-`
 
 const Symbs = () => {
   const dis = useAppDispatch()
@@ -175,24 +149,20 @@ const Symbs = () => {
     const orderedSyms = arr.sort((a: any, b: any) => {
       return a.order - b.order
     })
-    // console.log({orderedSyms});
-    
     return (
-      <ul>
+      <>
         <DocTitleX key={pageDoc.docId} doc={pageDoc} valueIN={pageDoc.title} />
-        {orderedSyms.map((sym: any) => (
-          <Symb key={sym.symId} sym={sym} valueIN={sym.body} />
-        ))}
-        <MyLi onClick={createNewSymHandler}>
-          <AddIcon sx={{ fontSize: 'medium' }} />
-        </MyLi>
-      </ul>
+        <ul>
+          {orderedSyms.map((sym: any) => (
+            <Symb key={sym.symId} sym={sym} valueIN={sym.body} />
+          ))}
+          <MyLi onClick={createNewSymHandler}>
+            <AddIcon sx={{ fontSize: 'medium' }} />
+          </MyLi>
+        </ul>
+      </>
     )
   } else return <h2>You have no Documents. Create one in the sidebar</h2>
 }
-
-///////////--------------------------------------////////////////
-
-///////////////////////////////////////////////////////////////
 
 export { Symbs }
