@@ -1,9 +1,10 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
-
 ## Symbiote Project
 
-This is a note editor website where you can create read update and delete your notes and documents. 
-Follow the instructions to get started.
+Symbiote is a text-pad/note-editor type of website with basic CRUD functionality. 
+This project had a few main goals:
+- To utilise the firebase firestore database to create individual content for each user.
+- To create a minimalistic clean experience that allows the users to not be distracted by the content of the page and focus on writing their notes. 
+- The main theme is purposefully emulating 70s-80s kind of design with some modern elements as well.
 
 ### Go to [symbiote-project.web.app](https://symbiote-project.web.app/)
 Log in using your google account. Currently other login methods are not supported.
