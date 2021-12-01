@@ -11,8 +11,7 @@ import {
   updateSymFire,
   updateTitleFire
 } from './firebase'
-
-import { onFocusBlur } from './utils'
+import { getKey, onFocusBlur } from './utils'
 
 export {
   auth,
@@ -26,5 +25,6 @@ export {
   createNewSym,
   deleteSym,
   deleteUserDoc,
+  getKey
 }
 export type { Data, P }
