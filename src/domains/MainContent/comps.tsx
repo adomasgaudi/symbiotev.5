@@ -8,8 +8,7 @@ import {
 } from 'scripts'
 import { EditDiv, EditH1, MyLi } from './styles'
 import {
-  addPageDoc,
-  addUserDocs,
+  editThis,
   updateSym,
   updateTitle,
   useAppDispatch,
@@ -28,6 +27,7 @@ interface SymbFCTypes {
 }
 const Symb: React.FC<SymbFCTypes> = ({ valueIN, sym }) => {
   const dis = useAppDispatch()
+  const edit = (key: keyof Data.storeDataType, pass: any) => dis(editThis([key, pass]))
   const divRef = useRef<HTMLDivElement>(null)
   const userUID = useAppSelector(state => state.data.userUID)
 
@@ -51,8 +51,8 @@ const Symb: React.FC<SymbFCTypes> = ({ valueIN, sym }) => {
         ;(async () => {
           deleteSym(userUID, sym.docId, sym.symId)
           const obj = await getFire(userUID)
-          dis(addUserDocs(obj))
-          dis(addPageDoc(obj[0]))
+          edit('userDocs', obj)
+          edit('pageDoc', obj[0])
         })()
       }
     }
@@ -77,6 +77,14 @@ const Symb: React.FC<SymbFCTypes> = ({ valueIN, sym }) => {
     </EditDiv>
   )
 }
+
+//
+
+//
+
+//
+
+//
 
 /////////////////////////////////////////////////////////////
 
@@ -121,10 +129,19 @@ const DocTitleX: React.FC<DocTitleXTypes> = ({ doc, valueIN }) => {
   )
 }
 
+//
+
+//
+
+//
+
+//
+
 //////////------------------------------------------/////////
 
 const Symbs = () => {
   const dis = useAppDispatch()
+  const edit = (key: keyof Data.storeDataType, pass: any) => dis(editThis([key, pass]))
   const userUID = useAppSelector(state => state.data.userUID)
   const pageDoc = useAppSelector(state => state.data.pageDoc)
 
@@ -134,12 +151,11 @@ const Symbs = () => {
     if (userUID) {
       ;(async () => {
         const userDocsArr = await getFire(userUID)
-        dis(addUserDocs(userDocsArr))
+        edit('userDocs', userDocsArr)
         let thisDoc = userDocsArr.filter(
           (doc: any) => doc.docId === pageDoc.docId
         )
-
-        dis(addPageDoc(thisDoc[0]))
+        edit('pageDoc', thisDoc[0])
       })()
     }
   }

@@ -1,32 +1,23 @@
 import { ButtonX, DivRow, Typo } from 'comps'
-import { MyLi, TextSpan, Xtag } from './styles'
-import {
-  addPageDoc,
-  addUserDocs,
-  toggleTheme,
-  updateDisplayName,
-  updateUserUID,
-  useAppDispatch,
-  useAppSelector,
-} from 'store'
-import { auth, createNewDoc, deleteUserDoc, getFire } from 'scripts'
+import { Data, auth, createNewDoc, deleteUserDoc, getFire } from 'scripts'
+import { DrawerHeader, DrawerS, MyLi, TextSpan, Xtag } from './styles'
+import { editThis, toggleTheme, useAppDispatch, useAppSelector } from 'store'
 
 import AddIcon from '@mui/icons-material/Add'
-import Box from '@mui/system/Box'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import Drawer from '@mui/material/Drawer'
 import { signOut } from 'firebase/auth'
-import styled from 'styled-components/macro'
 import { toggleSidebar } from 'store'
 import { useTheme } from '@mui/material/styles'
 
-const DrawerS = styled(Drawer)`
-  & .MuiDrawer-paper {
-    background: ${({ theme }) => theme.bg?.main};
-    ${({ theme }) => theme.text?.col}
-    border-right: 1px solid ${({ theme }) => theme.text?.main}
-  }
-`
+//
+
+//
+
+//
+
+//
+
+//////////////////////////////////////////////////////////////
 
 const DrawerX: React.FC = ({ children }) => {
   const sidebarON = useAppSelector(state => state.ui.sidebarON)
@@ -59,30 +50,16 @@ const DrawerX: React.FC = ({ children }) => {
 
 //
 
-// drawer header
+// 
 
-const DrawerHeader = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 56px;
-  @media (min-width: 600px) {
-    height: 64px;
-  }
-  @media (min-width: 0px) {
-    height: 48px;
-  }
-  padding: ${props => props.theme.spacing(0, -1)};
-`
-
-// drawer header
+// drawer header X  ////////////////////////////////////////////
 
 const DrawerHeaderX = () => {
   const dis = useAppDispatch()
   const displayName = useAppSelector(store => store.data.displayName)
 
   const toggleHandle = () => dis(toggleSidebar())
-  
+
   return (
     <DrawerHeader>
       <DivRow>{displayName ? <Typo>{displayName}</Typo> : null}</DivRow>
@@ -97,17 +74,28 @@ const DrawerHeaderX = () => {
   )
 }
 
-// drawer content
+//
+
+//
+
+//
+
+//
+
+//
+
+// drawer content ///////////////////////////////////////////////////////
 
 const DrawerContent = () => {
   const dis = useAppDispatch()
+  const edit = (key: keyof Data.storeDataType, pass: any) => dis(editThis([key, pass]))
   const userDocs = useAppSelector(state => state.data.userDocs)
   const userUID = useAppSelector(state => state.data.userUID)
   const displayName = useAppSelector(store => store.data.displayName)
 
   const docOpenHandler = (docId: string) => {
     let obj = userDocs.filter((doc: any) => doc.docId === docId)
-    dis(addPageDoc(obj[0]))
+    edit('pageDoc', obj[0])
   }
 
   const createNewDocHandler = async () => {
@@ -117,8 +105,8 @@ const DrawerContent = () => {
       ;(async () => {
         await createNewDoc(userUID)
         const obj = await getFire(userUID)
-        dis(addUserDocs(obj))
-        dis(addPageDoc(obj[0]))
+        edit('userDocs', obj)
+        edit('pageDoc', obj[0])
       })()
     }
   }
@@ -129,8 +117,8 @@ const DrawerContent = () => {
     if (userUID) {
       ;(async () => {
         const obj = await getFire(userUID)
-        dis(addUserDocs(obj))
-        dis(addPageDoc(obj[0]))
+        edit('userDocs', obj)
+        edit('pageDoc', obj[0])
       })()
     }
   }
@@ -138,27 +126,16 @@ const DrawerContent = () => {
   const logOutHandler = async () => {
     await signOut(auth)
     window.location.reload()
-    dis(updateDisplayName(null))
-    dis(updateUserUID(null))
+    edit('displayName', null)
+    edit('userUID', null)
   }
 
   const themeHandle = () => dis(toggleTheme())
 
-
-
-
-
   let arr = [...userDocs]
-  const orderedDocs =  arr.sort((a: any, b: any) => {
+  const orderedDocs = arr.sort((a: any, b: any) => {
     return a.order - b.order
   })
-
-
-
-
-
-
-
 
   return (
     <>

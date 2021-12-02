@@ -1,24 +1,21 @@
-import { updateDisplayName, updateUserUID, useAppDispatch } from 'store'
+import {Data, googleLogin} from 'scripts'
+import { editThis, useAppDispatch } from 'store'
 
 import { ButtonX } from 'comps'
-import {googleLogin} from 'scripts'
-import styled from 'styled-components/macro'
-
-const CenterDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-`
-
+import {CenterDiv} from './styles'
 
 const Welcome = () => {
   const dis = useAppDispatch()
+  const edit = (key: keyof Data.storeDataType, pass: any) => dis(editThis([key, pass]))
+
+
   const googleLoginHandler = async() => {
     const res = await googleLogin()
+    
     if(res){
-      dis(updateDisplayName(res.user.displayName))
-      dis(updateUserUID(res.user.uid))
+      console.log('dispatch', res.user.uid);
+      edit('displayName', res.user.displayName)
+      edit('userUID', res.user.uid)
     }
   }
   
