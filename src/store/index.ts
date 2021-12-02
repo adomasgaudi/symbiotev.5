@@ -1,24 +1,21 @@
 import { RootState, useAppDispatch, useAppSelector } from './hooks'
-import dataSlice, {
-  editThis,
-  updateSym,
-  updateTitle
-} from './data.slice'
-import uiSlice, { toggleSidebar, toggleTheme } from './ui.slice'
+import dataSlice, { editThis, updateSym, updateTitle } from './data.slice'
+import uiSlice, { toggleColor, toggleSidebar, toggleTheme } from './ui.slice'
 
 import store from './configure'
 
 export {
-  store, 
-  toggleSidebar, 
+  store,
+  toggleSidebar,
   uiSlice,
-  useAppDispatch, 
+  useAppDispatch,
   useAppSelector,
-  dataSlice, 
-  updateSym, 
+  dataSlice,
+  updateSym,
   updateTitle,
   toggleTheme,
-  editThis
+  editThis,
+  toggleColor,
 }
 
 export type { RootState }

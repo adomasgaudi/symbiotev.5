@@ -1,13 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { configureStore } from '@reduxjs/toolkit'
 import dataSlice from './data.slice'
-import uiSlice  from "./ui.slice"
+import uiSlice from './ui.slice'
 
 const store: any = configureStore({
-  reducer:{
+  reducer: {
     ui: uiSlice.reducer,
-    data: dataSlice.reducer
-  }
+    data: dataSlice.reducer,
+  },
 })
-
 
 export default store

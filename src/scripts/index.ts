@@ -9,7 +9,7 @@ import {
   getFire,
   googleLogin,
   updateSymFire,
-  updateTitleFire
+  updateTitleFire,
 } from './firebase'
 import { getKey, onFocusBlur } from './utils'
 
@@ -25,6 +25,6 @@ export {
   createNewSym,
   deleteSym,
   deleteUserDoc,
-  getKey
+  getKey,
 }
 export type { Data, P }

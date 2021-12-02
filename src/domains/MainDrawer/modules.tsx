@@ -1,7 +1,7 @@
 import { ButtonX, DivRow, Typo } from 'comps'
 import { Data, auth, createNewDoc, deleteUserDoc, getFire } from 'scripts'
 import { DrawerHeader, DrawerS, MyLi, TextSpan, Xtag } from './styles'
-import { editThis, toggleTheme, useAppDispatch, useAppSelector } from 'store'
+import { editThis, toggleColor, toggleTheme, useAppDispatch, useAppSelector } from 'store'
 
 import AddIcon from '@mui/icons-material/Add'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -22,7 +22,7 @@ import { useTheme } from '@mui/material/styles'
 const DrawerX: React.FC = ({ children }) => {
   const sidebarON = useAppSelector(state => state.ui.sidebarON)
   const drawerWidth = useAppSelector(state => state.ui.drawerWidth)
-  const theme = useTheme()
+  const theme = useTheme()         
 
   return (
     <DrawerS
@@ -131,6 +131,7 @@ const DrawerContent = () => {
   }
 
   const themeHandle = () => dis(toggleTheme())
+  const colorHandle = () => dis(toggleColor())
 
   let arr = [...userDocs]
   const orderedDocs = arr.sort((a: any, b: any) => {
@@ -140,6 +141,7 @@ const DrawerContent = () => {
   return (
     <>
       <ButtonX onClick={themeHandle}>Theme</ButtonX>
+      <ButtonX onClick={colorHandle}>Color</ButtonX>
       {displayName ? <ButtonX onClick={logOutHandler}>LOG-OUT</ButtonX> : null}
       {orderedDocs ? (
         <ul>
