@@ -1,4 +1,8 @@
-import styled from 'styled-components/macro'
+import Box from '@mui/system/Box'
+import Drawer from '@mui/material/Drawer'
+import styled from 'styled-components'
+
+// import styled from 'styled-components/macro'
 
 const MyLi = styled.li` 
 display: flex;
@@ -26,7 +30,27 @@ color: red;
 }
 `
 
+const DrawerS = styled(Drawer)`
+  & .MuiDrawer-paper {
+    background: ${({ theme }) => theme.bg?.main};
+    ${({ theme }) => theme.text?.col}
+    border-right: 1px solid ${({ theme }) => theme.text?.main}
+  }
+`
 
 
+const DrawerHeader = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 56px;
+  @media (min-width: 600px) {
+    height: 64px;
+  }
+  @media (min-width: 0px) {
+    height: 48px;
+  }
+  padding: ${props => props.theme.spacing(0, -1)};
+`
 
-export {Xtag, TextSpan, MyLi}
+export {Xtag, TextSpan, MyLi, DrawerS, DrawerHeader}

@@ -7,7 +7,6 @@ const MainContent = () => {
   return (
     <StyledDiv>
       <MyContainer>
-        {/* <DocTitle />  */}
         <Symbs />
       </MyContainer>
     </StyledDiv>

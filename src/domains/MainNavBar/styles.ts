@@ -1,5 +1,7 @@
+import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import styled from 'styled-components/macro'
 
@@ -42,4 +44,19 @@ const ChevronRightIconX = styled(ChevronRightIcon)`
   }
 `
 
-export { Typo, DivRow, ChevronRightIconX, ButtonX }
+const AppBarX = styled(AppBar)<{ open: boolean; drawerwidth: number }>`
+  && {
+    display: flex;
+    align-content: center;
+    background: transparent;
+    ${({open, drawerwidth}) => (open ? `width: calc(100% - ${drawerwidth}px);` : '')}
+    box-shadow: none;
+  }
+`
+
+const ToolbarS = styled(Toolbar)` 
+  display: flex;
+  justify-content: space-between;
+`
+
+export { Typo, DivRow, ChevronRightIconX, ButtonX, AppBarX, ToolbarS }

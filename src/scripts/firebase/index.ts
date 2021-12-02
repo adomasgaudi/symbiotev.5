@@ -138,7 +138,7 @@ const deleteUserDoc = async (userUID: string, docId: string) => {
 }
 
 const googleLogin = async () => {
- 
+    
     const provider = new GoogleAuthProvider()
     provider.addScope('profile')
     provider.addScope('email')

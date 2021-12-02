@@ -1,12 +1,9 @@
 import { Data, P } from 'scripts'
 
 import { createSlice } from '@reduxjs/toolkit'
+import {getKey} from 'scripts'
 
-const initialState: any
-  // {
-  //   userUID: string | null, displayName: string | null, userDocs: any | null, pageDoc: Data.docType | null
-  // } 
-  = {
+const initialState: Data.storeDataType = {
   userUID: null,
   displayName: null,
   userDocs: [],
@@ -19,45 +16,26 @@ const dataSlice = createSlice({
   reducers: {
 
     // //////////////////////////////////////////////
-    updateThis: (state, action: P.a<any>) => {
-      state[action.payload.item] = action.payload.obj
-    },
-
-    // //////////////////////////////////////////////
-    updateUserUID: (state, action: P.a<string | null>) => {
-      state.userUID = action.payload
-    },
-
-    // //////////////////////////////////////////////
-    updateDisplayName: (state, action: P.a<string | null>) => {
-      state.displayName = action.payload
-    },
- 
-    // //////////////////////////////////////////////
-    addUserDocs: (state, action: P.a<Data.docType[]>) => {
-      state.userDocs = action.payload
-    },
-
-    // //////////////////////////////////////////////
-    addPageDoc: (state, action: P.a<Data.docType>) => {
-      state.pageDoc = action.payload
+    editThis: (state, action: P.a<[ keyof Data.storeDataType , Data.stateObj ]>) => {
+      getKey(state)(action.payload[0])(action.payload[1])
     },
 
     // //////////////////////////////////////////////
     updateSym: (state, action: P.a<Data.symType>) => {
       // find sym in userDocs
-      state.userDocs.forEach((doc: Data.docType) => {
-        if (doc.docId === action.payload.docId) {
-          doc.syms?.forEach((sym: Data.symType) => {
-            if (sym.symId === action.payload.symId) {
-              sym.body = action.payload.body
-            }
-          })
-        }
-      })
+      if(state.userDocs)
+        state.userDocs.forEach((doc: Data.docType) => {
+          if (doc.docId === action.payload.docId) {
+            doc.syms?.forEach((sym: Data.symType) => {
+              if (sym.symId === action.payload.symId) {
+                sym.body = action.payload.body
+              }
+            })
+          }
+        })
       // find sym in pageDoc
       if (state.pageDoc)
-        state.pageDoc.syms?.forEach((sym: any) => {
+        state.pageDoc.syms?.forEach((sym: Data.symType) => {
           if (sym.symId === action.payload.symId)
             sym.body = action.payload.body
         })
@@ -65,7 +43,8 @@ const dataSlice = createSlice({
 
 
     // ////////////////////////////////////////////
-    updateTitle: (state, action: P.a<any>) => {
+    updateTitle: (state, action: P.a<{title: string, order: number, docId: string}>) => {
+      if(state.userDocs)
       state.userDocs.forEach((doc: any) => {
         if (doc.docId === action.payload.docId) {
           doc.title = action.payload.title;
@@ -73,17 +52,14 @@ const dataSlice = createSlice({
           doc.docId = action.payload.docId
         }
       })
-      state.pageDoc.title = action.payload.title
+      if(state.pageDoc) state.pageDoc.title = action.payload.title
     }
   }
 })
 
 
 export const { 
-  addUserDocs, 
-  addPageDoc, 
-  updateUserUID, 
-  updateDisplayName, 
+  editThis, 
   updateSym, 
   updateTitle 
 } = dataSlice.actions

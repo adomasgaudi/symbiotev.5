@@ -1,11 +1,8 @@
 import { RootState, useAppDispatch, useAppSelector } from './hooks'
 import dataSlice, {
-  addPageDoc,
-  addUserDocs,
-  updateDisplayName,
+  editThis,
   updateSym,
-  updateTitle,
-  updateUserUID
+  updateTitle
 } from './data.slice'
 import uiSlice, { toggleSidebar, toggleTheme } from './ui.slice'
 
@@ -18,13 +15,10 @@ export {
   useAppDispatch, 
   useAppSelector,
   dataSlice, 
-  addUserDocs, 
-  addPageDoc, 
-  updateUserUID, 
-  updateDisplayName, 
   updateSym, 
   updateTitle,
-  toggleTheme
+  toggleTheme,
+  editThis
 }
 
 export type { RootState }

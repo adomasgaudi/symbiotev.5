@@ -18,6 +18,22 @@ namespace Data {
     name: string,
     userDocs: docType[] | null
   }
+  export type storeDataType = {
+    userUID: string | null, 
+    displayName: string | null, 
+    userDocs: Data.docType[] | null, 
+    pageDoc: Data.docType | null
+  } 
+  export type stateObj = string | null | Data.docType | Data.docType[]
+  export type ttheme = {
+    theme: {
+      typography: any,
+      text: {
+        main: string
+      }
+    }
+  }
+ 
 }
 
 namespace P {

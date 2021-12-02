@@ -1,16 +1,10 @@
 import Button from '@mui/material/Button'
+import { Data } from 'scripts'
 import styled from "styled-components"
 
-interface ttheme {
-  theme: {
-    text: {
-      main: string
-    }
-  }
-}
-const tmain = ({ theme: { text } }: ttheme) => text.main
-const tfont = ({ theme: { typography } }: any) => typography.fontFamily
-const tsize = ({ theme: { typography } }: any) => typography.fontSize
+const tmain = ({ theme: { text } }: Data.ttheme ) => text.main
+const tfont = ({ theme: { typography } }: Data.ttheme) => typography.fontFamily
+const tsize = ({ theme: { typography } }: Data.ttheme) => typography.fontSize
 
 
 const ButtonX = styled(Button)`

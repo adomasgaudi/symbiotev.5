@@ -1,3 +1,5 @@
+
+
 const onFocusBlur = (
   target: HTMLElement | null,
   callbackFocus: (target: any, e: any) => void,
@@ -13,4 +15,9 @@ const onFocusBlur = (
   }
 }
 
-export { onFocusBlur}
+const getKey = <T extends object, U extends keyof T>(obj: T) => (key: U) => (value: any) => 
+{
+  obj[key] = value
+}
+
+export { onFocusBlur, getKey }
